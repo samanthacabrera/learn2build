@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const landmarksRoutes = require('./routes/landmarks');
 const { connectToDatabase, closeConnection } = require('./db');
 
 dotenv.config();
@@ -8,10 +9,23 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
+// routes
+app.get('/', (req, res) => {
+    res.send('hi,from backend');
+});
+
+app.use('/api/landmarks', landmarksRoutes);
+
+// start server
 connectToDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
@@ -21,6 +35,7 @@ connectToDatabase().then(() => {
     process.exit(1);
 });
 
+// shutdown server
 process.on('SIGINT', () => {
     closeConnection().then(() => {
         process.exit(0);
@@ -29,18 +44,6 @@ process.on('SIGINT', () => {
         process.exit(1);
     });
 });
-
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the learn2build API');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-
-
 
 
 

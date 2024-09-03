@@ -1,13 +1,16 @@
-import './App.css'
+import React, { useState } from 'react';
+import LandMarkList from './components/LandMarkList';
+import RouteMap from './components/RouteMap';
 
-function App() {
- 
+const App = () => {
+    const [selectedLandmarks, setSelectedLandmarks] = useState([]);
 
-  return (
-    <>
-    <h1 className="text-4xl">learn 2 build</h1>
-    </>
-  )
-}
+    return (
+        <div>
+            <LandMarkList onSelectLandmarks={setSelectedLandmarks} />
+            <RouteMap landmarks={selectedLandmarks} />
+        </div>
+    );
+};
 
-export default App
+export default App;

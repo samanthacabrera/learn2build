@@ -1,5 +1,12 @@
+require('dotenv').config();
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://samanthancabrera:iS1Q5FkG0zWktD7U@learn2build.wpvk6.mongodb.net/?retryWrites=true&w=majority&appName=learn2build";
+
+const uri = process.env.MONGO_URI;
+
+if (!uri) {
+    throw new Error('MONGO_URI is not defined in .env file');
+}
 
 const client = new MongoClient(uri, {
     serverApi: {
