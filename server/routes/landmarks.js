@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const db = client.db('learn2build');
         const landmarksCollection = db.collection('landmarks');
         const landmarks = await landmarksCollection.find().toArray();
-        console.log(landmarks)
+        // console.log(landmarks)
         res.json(landmarks);
     } catch (error) {
         console.error("Failed to fetch landmarks", error);
