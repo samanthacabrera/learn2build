@@ -1,44 +1,38 @@
 import React, { useState, useEffect } from 'react';
 
-const LandMarkList = ({ onSelectLandmarks }) => {
+const LandMarkList = () => {
     const [landmarks, setLandmarks] = useState([]);
-    const [selectedLandmarks, setSelectedLandmarks] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetch('http://localhost:5001/api/landmarks')
-            .then(response => response.json())
-            .then(data => {
-                setLandmarks(data);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); 
             })
-            .catch(error => console.error('Error fetching landmarks:', error));
+            .then(data => {
+                setLandmarks(data); 
+            })
+            .catch(error => {
+                console.error('Error fetching landmarks:', error);
+                setError('Failed to fetch landmarks');
+            });
     }, []);
 
-    const handleCheckboxChange = (landmark) => {
-        setSelectedLandmarks(prev => {
-            const isSelected = prev.some(l => l._id === landmark._id);
-            if (isSelected) {
-                return prev.filter(l => l._id !== landmark._id);
-            } else {
-                return [...prev, landmark];
-            }
-        });
-    };
-
-    useEffect(() => {
-        onSelectLandmarks(selectedLandmarks);
-    }, [selectedLandmarks]);
+    if (error) {
+        return <div>Error: {error}</div>; 
+    }
 
     return (
         <div>
-            <h2>Select Landmarks</h2>
+            <h2>Landmarks in Denver</h2>
             <ul>
                 {landmarks.map(landmark => (
                     <li key={landmark._id}>
-                        <input
-                            type="checkbox"
-                            onChange={() => handleCheckboxChange(landmark)}
-                        />
-                        {landmark.name}
+                        <span>{landmark.name}</span><br/>
+                        Coordinates: Latitude {landmark.coordinates.latitude}, Longitude {landmark.coordinates.longitude}
                     </li>
                 ))}
             </ul>

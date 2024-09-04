@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LandMarkList from './components/LandMarkList';
-import RouteMap from './components/RouteMap';
+import './App.css'
 
 const App = () => {
-    const [selectedLandmarks, setSelectedLandmarks] = useState([]);
-
+   
     return (
         <div>
-            <LandMarkList onSelectLandmarks={setSelectedLandmarks} />
-            <RouteMap landmarks={selectedLandmarks} />
+            <h1 className="text-xl font-semibold"><span className="line-through pr-1">See </span>Run The City</h1>
+            <LandMarkList  />
         </div>
     );
 };
