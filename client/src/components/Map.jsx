@@ -1,25 +1,39 @@
-import * as React from 'react';
-import { Map as ReactMapGL } from 'react-map-gl';
-import mapboxgl from 'mapbox-gl';
+// src/components/Map.jsx
+import React from 'react';
+import ReactMapGL from 'react-map-gl';
 
-const Map = React.forwardRef((props, ref) => {
-  const { mapboxAccessToken, initialViewState, style, mapStyle, ...rest } = props;
+const Map = () => {
+  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-  React.useEffect(() => {
-    if (mapboxAccessToken) {
-      mapboxgl.accessToken = mapboxAccessToken;
-    }
-  }, [mapboxAccessToken]);
+  console.log('Map component rendered');
+  console.log('Mapbox Token:', mapboxToken);
+
+  if (!mapboxToken) {
+    console.error('Mapbox token is missing');
+    return <div>Error: Mapbox token not provided</div>;
+  }
+
+  const [viewport, setViewport] = React.useState({
+    latitude: 37.7749,
+    longitude: -122.4194,
+    zoom: 8,
+  });
+
+  console.log('Viewport state:', viewport);
 
   return (
     <ReactMapGL
-      {...rest}
-      initialViewState={initialViewState}
-      style={style}
-      mapStyle={mapStyle}
-      ref={ref}
+      {...viewport}
+      width="100%"
+      height="400px"
+      mapStyle="mapbox://styles/mapbox/streets-v11"
+      mapboxApiAccessToken={mapboxToken}
+      onViewportChange={(nextViewport) => {
+        console.log('Viewport change:', nextViewport);
+        setViewport(nextViewport);
+      }}
     />
   );
-});
+};
 
-export default Map
+export default Map;
