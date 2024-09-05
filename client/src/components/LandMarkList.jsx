@@ -1,25 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import CreateRoute from './CreateRoute';  
 
-const LandMarkList = () => {
-    const [landmarks, setLandmarks] = useState([]);
+const LandMarkList = ({landmarks}) => {
     const [selectedLandmarks, setSelectedLandmarks] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:5001/api/landmarks')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setLandmarks(data);
-            })
-            .catch(error => {
-                console.error('Error fetching landmarks:', error);
-            });
-    }, []);
 
     const handleCheckboxChange = (landmark) => {
         setSelectedLandmarks(selected => {

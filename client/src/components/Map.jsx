@@ -1,25 +1,14 @@
-// src/components/Map.jsx
 import React from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
 
-const Map = () => {
+const Map = ({ landmarks }) => {
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-  console.log('Map component rendered');
-  console.log('Mapbox Token:', mapboxToken);
-
-  if (!mapboxToken) {
-    console.error('Mapbox token is missing');
-    return <div>Error: Mapbox token not provided</div>;
-  }
-
   const [viewport, setViewport] = React.useState({
-    latitude: 37.7749,
-    longitude: -122.4194,
-    zoom: 8,
+    latitude: 39.7392, // Denver coordinates
+    longitude: -104.9903, 
+    zoom: 12,
   });
-
-  console.log('Viewport state:', viewport);
 
   return (
     <ReactMapGL
@@ -28,11 +17,18 @@ const Map = () => {
       height="400px"
       mapStyle="mapbox://styles/mapbox/streets-v11"
       mapboxApiAccessToken={mapboxToken}
-      onViewportChange={(nextViewport) => {
-        console.log('Viewport change:', nextViewport);
-        setViewport(nextViewport);
-      }}
-    />
+      onViewportChange={nextViewport => setViewport(nextViewport)}
+    >
+      {landmarks.map(landmark => (
+        <Marker
+          key={landmark._id} 
+          latitude={landmark.coordinates.latitude}
+          longitude={landmark.coordinates.longitude}
+        >
+          <div style={{ backgroundColor: 'green', width: '10px', height: '10px', borderRadius: '50%' }} />
+        </Marker>
+      ))}
+    </ReactMapGL>
   );
 };
 
