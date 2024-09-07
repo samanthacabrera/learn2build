@@ -1,5 +1,24 @@
 import React, { useState } from 'react';
 
+// SavedRoutes Component
+const SavedRoutes = ({ routes }) => {
+    return (
+        <div>
+            <h3>Saved Routes</h3>
+            {routes.length > 0 ? (
+                <ul>
+                    {routes.map((route, index) => (
+                        <li key={index}>{route}</li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No routes saved yet.</p>
+            )}
+        </div>
+    );
+};
+
+// CreateRoute Component
 const CreateRoute = ({ selectedLandmarks }) => {
     const [route, setRoute] = useState('');
     const [routes, setRoutes] = useState([]);
@@ -17,18 +36,19 @@ const CreateRoute = ({ selectedLandmarks }) => {
         if (route) {
             setRoutes([...routes, route]);
             setRoute(''); 
-            // alert('route saved')
         }
     };
 
     return (
         <div>
             <button onClick={displayRoute}>Create Route</button>
-            {route && <>
-                <p>{route}</p>
-                <button onClick={saveRoute}>Save Route</button>
-            </>}
-            
+            {route && (
+                <>
+                    <p>{route}</p>
+                    <button onClick={saveRoute}>Save Route</button>
+                </>
+            )}
+            <SavedRoutes routes={routes} />
         </div>
     );
 };
