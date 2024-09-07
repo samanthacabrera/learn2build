@@ -25,7 +25,15 @@ const Map = ({ landmarks }) => {
           latitude={landmark.coordinates.latitude}
           longitude={landmark.coordinates.longitude}
         >
-          <div style={{ backgroundColor: 'green', width: '10px', height: '10px', borderRadius: '50%' }} />
+                    <div style={{
+            backgroundColor: 'green',
+            width: '15px',
+            height: '15px',
+            borderRadius: '50%',
+            border: '2px solid white',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+            transform: 'translate(-50%, -50%)' 
+          }} />
         </Marker>
       ))}
     </ReactMapGL>
