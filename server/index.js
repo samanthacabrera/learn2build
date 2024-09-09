@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const landmarksRoutes = require('./routes/landmarks');
+const routesRoutes = require('./routes/routes');
 const { connectToDatabase, closeConnection } = require('./db');
 
 dotenv.config();
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/landmarks', landmarksRoutes);
+app.use('/api/routes', routesRoutes);
+
 
 // start server
 connectToDatabase().then(() => {

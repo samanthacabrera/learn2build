@@ -32,10 +32,31 @@ const CreateRoute = ({ selectedLandmarks }) => {
         setRoute(`Customized route from ${routeString}`);
     };
 
-    const saveRoute = () => {
+    const saveRoute = async () => {
         if (route) {
-            setRoutes([...routes, route]);
-            setRoute(''); 
+            try {
+                
+                const response = await fetch('http://localhost:5001/api/routes/save-route', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ route })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Route saved successfully:', data);
+
+                    // Add the new route to the routes list
+                    setRoutes([...routes, route]);
+                    setRoute(''); // Clear the current route
+                } else {
+                    console.error('Failed to save route');
+                }
+            } catch (error) {
+                console.error('Error saving route:', error);
+            }
         }
     };
 
