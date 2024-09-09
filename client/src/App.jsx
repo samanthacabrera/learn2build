@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
+import SavedRoutes from './components/SavedRoutes';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
@@ -26,7 +27,8 @@ const App = () => {
     <div>
       <h1 className="text-9xl font-semibold"><span className="line-through pr-1">See </span>Run The City</h1>
       <LandMarkList landmarks={landmarks} selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}/>
-      <Map landmarks={landmarks} selectedLandmarks={selectedLandmarks}  />
+      <Map landmarks={landmarks} selectedLandmarks={selectedLandmarks} />
+      <SavedRoutes />
     </div>
   );
 };

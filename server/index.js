@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const landmarksRoutes = require('./routes/landmarks');
-const routesRoutes = require('./routes/routes');
+const landmarksRoutes = require('./endpoints/landmarks');
+const routesRoutes = require('./endpoints/routes');
 const { connectToDatabase, closeConnection } = require('./db');
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
@@ -18,7 +18,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// routes
+// endpoints
 app.get('/', (req, res) => {
     res.send('hi,from backend');
 });
