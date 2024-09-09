@@ -22,7 +22,7 @@ const App = () => {
                 console.error('Error fetching landmarks:', error);
             });
     }, []);
-
+  
   return (
     <div>
       <h1 className="text-9xl font-semibold"><span className="line-through pr-1">See </span>Run The City</h1>

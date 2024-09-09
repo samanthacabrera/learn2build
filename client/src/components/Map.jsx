@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, Source, Layer } from 'react-map-gl';
 
 const Map = ({ landmarks, selectedLandmarks }) => {
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -7,8 +7,13 @@ const Map = ({ landmarks, selectedLandmarks }) => {
   const [viewport, setViewport] = React.useState({
     latitude: 39.7392, // Denver coordinates
     longitude: -104.9903,
-    zoom: 12,
+    zoom: 11,
   });
+
+  const routeCoordinates = selectedLandmarks.map(landmark => [
+    landmark.coordinates.longitude,
+    landmark.coordinates.latitude
+  ]);
 
   return (
     <ReactMapGL
@@ -36,6 +41,29 @@ const Map = ({ landmarks, selectedLandmarks }) => {
           }} />
         </Marker>
       ))}
+
+      {routeCoordinates.length > 1 && (
+        <Source
+          id="route"
+          type="geojson"
+          data={{
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: routeCoordinates,
+            },
+          }}
+        >
+          <Layer
+            id="route"
+            type="line"
+            paint={{
+              'line-color': '#FF0000',
+              'line-width': 3,
+            }}
+          />
+        </Source>
+      )}
     </ReactMapGL>
   );
 };
