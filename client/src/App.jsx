@@ -4,6 +4,7 @@ import Map from './components/Map';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
+  const [selectedLandmarks, setSelectedLandmarks] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:5001/api/landmarks')
@@ -24,8 +25,8 @@ const App = () => {
   return (
     <div>
       <h1 className="text-9xl font-semibold"><span className="line-through pr-1">See </span>Run The City</h1>
-      <LandMarkList landmarks={landmarks}/>
-      <Map landmarks={landmarks} />
+      <LandMarkList landmarks={landmarks} selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}/>
+      <Map landmarks={landmarks} selectedLandmarks={selectedLandmarks}  />
     </div>
   );
 };
