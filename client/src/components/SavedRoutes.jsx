@@ -1,12 +1,9 @@
-// SavedRoutes.jsx
 import React, { useState, useEffect } from 'react';
-import RouteModal from './RouteModal';
 
 const SavedRoutes = () => {
     const [routes, setRoutes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedRoute, setSelectedRoute] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -28,13 +25,11 @@ const SavedRoutes = () => {
         fetchRoutes();
     }, []);
 
-    const openModal = (route) => {
-        setSelectedRoute(route);
+    const openModal = () => {
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
-        setSelectedRoute(null);
         setIsModalOpen(false);
     };
 
@@ -48,19 +43,35 @@ const SavedRoutes = () => {
 
     return (
         <div>
-            <h2>Saved Routes</h2>
-            <ul>
-                {routes.map(route => (
-                    <li key={route._id}>
-                        <button onClick={() => openModal(route.route)}>View Route</button>
-                    </li>
-                ))}
-            </ul>
-            <RouteModal
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                route={selectedRoute}
-            />
+            <button
+                onClick={openModal}
+            >
+                View Saved Routes
+            </button>
+
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50">
+                    <div className="bg-white">
+                        <button
+                            onClick={closeModal}
+                        >
+                            &times;
+                        </button>
+                        <ul>
+                            {routes.length > 0 ? (
+                                routes.map(route => (
+                                    <li key={route._id}>
+                                        <p><strong>Name:</strong> {route.name}</p>
+                                        <p><strong>Route:</strong> {route.route}</p>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>No routes saved.</p>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
