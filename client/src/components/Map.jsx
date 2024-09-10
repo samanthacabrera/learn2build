@@ -12,6 +12,8 @@ const Map = ({ landmarks, selectedLandmarks }) => {
 
   const [routeCoordinates, setRouteCoordinates] = React.useState([]);
   const [distance, setDistance] = React.useState(null);
+  const [userLocation, setUserLocation] = React.useState(null);
+  const [isTracking, setIsTracking] = React.useState(false);
 
   React.useEffect(() => {
     const fetchRoute = async () => {
@@ -40,6 +42,39 @@ const Map = ({ landmarks, selectedLandmarks }) => {
 
     fetchRoute();
   }, [selectedLandmarks, mapboxToken]);
+
+  React.useEffect(() => {
+    if (navigator.geolocation && isTracking) {
+      const watchId = navigator.geolocation.watchPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+          setViewport(prevViewport => ({
+            ...prevViewport,
+            latitude,
+            longitude,
+            zoom: 14
+          }));
+        },
+        error => console.error('Error fetching location:', error),
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+
+      return () => {
+        if (watchId) {
+          navigator.geolocation.clearWatch(watchId);
+        }
+      };
+    }
+  }, [isTracking]);
+
+  const toggleTracking = () => {
+    setIsTracking(prev => !prev);
+  };
 
   return (
     <ReactMapGL
@@ -91,11 +126,32 @@ const Map = ({ landmarks, selectedLandmarks }) => {
         </Source>
       )}
 
+      {userLocation && (
+        <Marker latitude={userLocation.latitude} longitude={userLocation.longitude}>
+          <div style={{
+            backgroundColor: 'blue',
+            width: '15px',
+            height: '15px',
+            borderRadius: '50%',
+            border: '2px solid white',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+            transform: 'translate(-50%, -50%)'
+          }} />
+        </Marker>
+      )}
+
       {distance !== null && (
-        <div style={{ position: 'absolute', bottom: '10px', left: '10px', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
-          <strong>Distance:</strong> {distance} miles
+        <div style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
+          Distance: {distance} miles
         </div>
       )}
+
+      <button
+        style={{ position: 'absolute', top: '10px', left: '10px', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}
+        onClick={toggleTracking}
+      >
+        {isTracking ? 'Stop Tracking' : 'Start Tracking'}
+      </button>
     </ReactMapGL>
   );
 };
