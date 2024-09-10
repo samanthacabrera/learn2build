@@ -3,6 +3,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-reac
 import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
 import SavedRoutes from './components/SavedRoutes';
+import Profile from './components/Profile';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
@@ -38,6 +39,7 @@ const App = () => {
       <LandMarkList landmarks={landmarks} selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}/>
       <Map landmarks={landmarks} selectedLandmarks={selectedLandmarks} />
       <SavedRoutes />
+      <Profile/>
     </div>
   );
 };

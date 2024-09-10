@@ -25,8 +25,7 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks }) =>
                 checked={selectedLandmarks.includes(landmark)} // controls checkbox state
                 onChange={() => handleCheckboxChange(landmark)} // handles checkbox change
               />
-              {landmark.name} <br />
-              Coordinates: Latitude {landmark.coordinates.latitude}, Longitude {landmark.coordinates.longitude}
+              {landmark.name}
             </label>
           </li>
         ))}
