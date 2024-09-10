@@ -11,6 +11,7 @@ const Map = ({ landmarks, selectedLandmarks }) => {
   });
 
   const [routeCoordinates, setRouteCoordinates] = React.useState([]);
+  const [distance, setDistance] = React.useState(null);
 
   React.useEffect(() => {
     const fetchRoute = async () => {
@@ -27,7 +28,11 @@ const Map = ({ landmarks, selectedLandmarks }) => {
         }
         const data = await response.json();
         const route = data.routes[0].geometry.coordinates;
+        const routeDistanceInMeters = data.routes[0].distance;
+        const routeDistanceInMiles = routeDistanceInMeters / 1609.34;
+
         setRouteCoordinates(route);
+        setDistance(routeDistanceInMiles.toFixed(2)); 
       } catch (error) {
         console.error('Error fetching route:', error);
       }
@@ -84,6 +89,12 @@ const Map = ({ landmarks, selectedLandmarks }) => {
             }}
           />
         </Source>
+      )}
+
+      {distance !== null && (
+        <div style={{ position: 'absolute', bottom: '10px', left: '10px', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
+          <strong>Distance:</strong> {distance} miles
+        </div>
       )}
     </ReactMapGL>
   );
