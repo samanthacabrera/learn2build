@@ -10,10 +10,31 @@ const Map = ({ landmarks, selectedLandmarks }) => {
     zoom: 11,
   });
 
-  const routeCoordinates = selectedLandmarks.map(landmark => [
-    landmark.coordinates.longitude,
-    landmark.coordinates.latitude
-  ]);
+  const [routeCoordinates, setRouteCoordinates] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchRoute = async () => {
+      if (selectedLandmarks.length < 2) return; 
+
+      const waypoints = selectedLandmarks.map(landmark => 
+        `${landmark.coordinates.longitude},${landmark.coordinates.latitude}`
+      ).join(';');
+
+      try {
+        const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/walking/${waypoints}?steps=true&geometries=geojson&access_token=${mapboxToken}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const route = data.routes[0].geometry.coordinates;
+        setRouteCoordinates(route);
+      } catch (error) {
+        console.error('Error fetching route:', error);
+      }
+    };
+
+    fetchRoute();
+  }, [selectedLandmarks, mapboxToken]);
 
   return (
     <ReactMapGL
@@ -42,7 +63,7 @@ const Map = ({ landmarks, selectedLandmarks }) => {
         </Marker>
       ))}
 
-      {routeCoordinates.length > 1 && (
+      {routeCoordinates.length > 0 && (
         <Source
           id="route"
           type="geojson"

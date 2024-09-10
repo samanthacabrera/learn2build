@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 
 const SavedRoutes = () => {
+    const { isSignedIn } = useAuth(); 
     const [routes, setRoutes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
+        if (!isSignedIn) {
+            setLoading(false); 
+            return;
+        }
+
         const fetchRoutes = async () => {
             try {
                 const response = await fetch('http://localhost:5001/api/routes');
@@ -23,7 +30,7 @@ const SavedRoutes = () => {
         };
 
         fetchRoutes();
-    }, []);
+    }, [isSignedIn]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -32,6 +39,10 @@ const SavedRoutes = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    if (!isSignedIn) {
+        return <div>Please sign in to view saved routes.</div>;
+    }
 
     if (loading) {
         return <div>Loading...</div>;
@@ -43,26 +54,17 @@ const SavedRoutes = () => {
 
     return (
         <div>
-            <button
-                onClick={openModal}
-            >
-                View Saved Routes
-            </button>
-
+            <button onClick={openModal}>View Saved Routes</button>
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-900 bg-opacity-50">
                     <div className="bg-white">
-                        <button
-                            onClick={closeModal}
-                        >
-                            &times;
-                        </button>
+                        <button onClick={closeModal}>&times;</button>
                         <ul>
                             {routes.length > 0 ? (
                                 routes.map(route => (
                                     <li key={route._id}>
-                                        <p><strong>Name:</strong> {route.name}</p>
-                                        <p><strong>Route:</strong> {route.route}</p>
+                                        <p>Name: {route.name}</p>
+                                        <p>Description: {route.route}</p>
                                     </li>
                                 ))
                             ) : (

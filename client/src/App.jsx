@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
 import SavedRoutes from './components/SavedRoutes';
@@ -25,6 +26,14 @@ const App = () => {
   
   return (
     <div>
+      <header>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </header>
       <h1 className="text-9xl font-semibold"><span className="line-through pr-1">See </span>Run The City</h1>
       <LandMarkList landmarks={landmarks} selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}/>
       <Map landmarks={landmarks} selectedLandmarks={selectedLandmarks} />

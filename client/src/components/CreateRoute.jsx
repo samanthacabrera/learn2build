@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 
 const CreateRoute = ({ selectedLandmarks }) => {
+    const { isSignedIn } = useAuth(); 
     const [route, setRoute] = useState('');
     const [name, setName] = useState(''); 
     const [routes, setRoutes] = useState([]);
@@ -15,6 +17,11 @@ const CreateRoute = ({ selectedLandmarks }) => {
     };
 
     const saveRoute = async () => {
+        if (!isSignedIn) {
+            console.error('You must be signed in to save a route.');
+            return;
+        }
+
         if (route && name) {
             try {
                 const response = await fetch('http://localhost:5001/api/routes/save-route', {
@@ -42,6 +49,10 @@ const CreateRoute = ({ selectedLandmarks }) => {
             console.error('Route or name is missing');
         }
     };
+
+    if (!isSignedIn) {
+        return <div>Please sign in to create and save routes.</div>;
+    }
 
     return (
         <div>
