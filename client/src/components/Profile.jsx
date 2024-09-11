@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import RunLogger from './RunLogger';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
-  const [isMiles, setIsMiles] = useState(true);
   const [accessToken, setAccessToken] = useState(import.meta.env.VITE_STRAVA_ACCESS_TOKEN);
   const refreshToken = import.meta.env.VITE_STRAVA_REFRESH_TOKEN; 
 
@@ -23,14 +23,16 @@ const Profile = () => {
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to refresh token');
+        throw new Error(`Failed to refresh token: ${data.error || response.statusText}`);
       }
 
       setAccessToken(data.access_token);
       localStorage.setItem('strava_access_token', data.access_token); 
     } catch (error) {
-      setError(error.message);
+      console.error('Error refreshing access token:', error.message);
+      setError(`Error refreshing access token: ${error.message}`);
     }
   };
 
@@ -46,6 +48,7 @@ const Profile = () => {
         });
 
         if (response.status === 401) {
+          console.log('Token expired, refreshing...'); 
           await refreshAccessToken();
           return;
         }
@@ -57,7 +60,8 @@ const Profile = () => {
         const data = await response.json();
         setProfile(data);
       } catch (error) {
-        setError(error.message);
+        console.error('Error fetching profile:', error.message); 
+        setError(`Error fetching profile: ${error.message}`);
       }
     };
 
@@ -75,7 +79,10 @@ const Profile = () => {
   return (
     <div>
       <h2>Profile</h2>
-        <p><strong>Name:</strong> {profile.firstname} {profile.lastname}</p>
+      <p><strong>Name:</strong> {profile.firstname} {profile.lastname}</p>
+ 
+      <h3>Log Your Runs</h3>
+      <RunLogger />
     </div>
   );
 };

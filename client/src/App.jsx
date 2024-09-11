@@ -5,7 +5,7 @@ import Welcome from './components/Welcome';
 import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
 import SavedRoutes from './components/SavedRoutes';
-import RunLogger from './components/RunLogger';
+import Profile from './components/Profile';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
@@ -58,7 +58,7 @@ const App = () => {
               </>
             } 
           />
-          <Route path="/run-logger" element={<RunLogger />} />
+          <Route path="/profile" element={<Profile />} /> 
         </Routes>
       </div>
     </Router>
