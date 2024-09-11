@@ -6,6 +6,7 @@ import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
 import SavedRoutes from './components/SavedRoutes';
 import Profile from './components/Profile';
+import Footer from './components/Footer';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
@@ -60,6 +61,7 @@ const App = () => {
           />
           <Route path="/profile" element={<Profile />} /> 
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );

@@ -37,7 +37,7 @@ const RunLogger = () => {
             ))}
           </ul>
         ) : (
-          <p>No runs logged yet. Start your first run!</p>
+          <p>No runs logged yet. </p>
         )}
       </div>
     </div>

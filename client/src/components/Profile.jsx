@@ -81,7 +81,6 @@ const Profile = () => {
       <h2>Profile</h2>
       <p><strong>Name:</strong> {profile.firstname} {profile.lastname}</p>
  
-      <h3>Log Your Runs</h3>
       <RunLogger />
     </div>
   );
