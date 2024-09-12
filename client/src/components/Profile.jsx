@@ -69,18 +69,19 @@ const Profile = () => {
   }, [accessToken]); 
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-600 font-bold text-lg">Error: {error}</div>;
   }
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return <div className="text-gray-500">Loading...</div>;
   }
 
   return (
-    <div>
-      <h2>Profile</h2>
-      <p><strong>Name:</strong> {profile.firstname} {profile.lastname}</p>
- 
+    <div className="p-6 min-h-screen flex flex-col items-start">
+      <h2 className="text-3xl font-extrabold mb-4">Profile</h2>
+      <p className="text-xl font-semibold mb-6">
+        <strong>Name:</strong> {profile.firstname} {profile.lastname}
+      </p>
       <RunLogger />
     </div>
   );
