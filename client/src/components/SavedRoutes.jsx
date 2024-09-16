@@ -57,14 +57,17 @@ const SavedRoutes = () => {
             <button onClick={openModal} className="border p-2 rounded hover:bg-black hover:text-white transition-all duration-300">View Saved Routes</button>
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-900 bg-opacity-50">
-                    <div className="bg-white">
+                    <div className="bg-white p-4">
                         <button onClick={closeModal}>&times;</button>
-                        <ul>
+                        <ul className="space-y-4 ">
                             {routes.length > 0 ? (
                                 routes.map(route => (
-                                    <li key={route._id}>
-                                        <p>Name: {route.name}</p>
-                                        <p>Description: {route.route}</p>
+                                    <li key={route._id}
+                                        className="border-b border-black rounded-sm hover:bg-black hover:bg-opacity-5 transition-all duration-500"
+                                    >
+                                        <p className="text-2xl leading-relaxed tracking-wide">{route.name}</p>
+                                        <p className="mb-2"><span className="tracking-wider">Description: </span>{route.route}</p>
+                                        <button className="text-sm text-white bg-black rounded-lg px-2 py-1 my-1">select route</button>
                                     </li>
                                 ))
                             ) : (

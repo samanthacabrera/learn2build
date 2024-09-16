@@ -78,13 +78,13 @@ const Profile = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen flex flex-col items-start">
-      <h2 className="text-3xl font-extrabold mb-4">Profile</h2>
-      <p className="text-xl font-semibold mb-6">
-        <strong>Name:</strong> {profile.firstname} {profile.lastname}
-      </p>
-      <RunLogger />
-      <SavedRoutes />
+    <div className="flex flex-col h-screen">
+      <h2 className="text-3xl font-extrabold mb-4">{profile.firstname}'s Profile</h2>
+      <div className="flex">
+        <RunLogger />
+        <SavedRoutes />
+      </div>
+
     </div>
   );
 };
