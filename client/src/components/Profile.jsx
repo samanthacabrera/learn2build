@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RunLogger from './RunLogger';
+import SavedRoutes from './SavedRoutes';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -83,6 +84,7 @@ const Profile = () => {
         <strong>Name:</strong> {profile.firstname} {profile.lastname}
       </p>
       <RunLogger />
+      <SavedRoutes />
     </div>
   );
 };

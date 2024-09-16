@@ -13,7 +13,6 @@ const RunLogger = () => {
 
   return (
     <div>
-      <h1>Log Your Run</h1>
       <div>
         <input
           type="date"
@@ -21,8 +20,8 @@ const RunLogger = () => {
           onChange={(e) => setDate(e.target.value)}
           placeholder="Date"
         />
-        <button onClick={handleLogRun}>
-          Log Run
+        <button onClick={handleLogRun} className="border p-2 rounded hover:bg-black hover:text-white transition-all duration-300">
+          Log New Run
         </button>
       </div>
 

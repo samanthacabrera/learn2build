@@ -55,11 +55,10 @@ const App = () => {
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
                 />
-                <SavedRoutes />
               </>
             } 
           />
-          <Route path="/profile" element={<Profile />} /> 
+          <Route path="/profile" element={<Profile />}/> 
         </Routes>
         <Footer/>
       </div>

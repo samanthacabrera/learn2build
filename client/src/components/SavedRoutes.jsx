@@ -54,7 +54,7 @@ const SavedRoutes = () => {
 
     return (
         <div>
-            <button onClick={openModal}>View Saved Routes</button>
+            <button onClick={openModal} className="border p-2 rounded hover:bg-black hover:text-white transition-all duration-300">View Saved Routes</button>
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-900 bg-opacity-50">
                     <div className="bg-white">
