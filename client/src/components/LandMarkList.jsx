@@ -12,25 +12,34 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, sele
     });
   };
 
-  const filteredLandmarks = landmarks.filter(landmark => landmark.city === selectedCity);
+  const filteredLandmarks = landmarks.filter((landmark) => landmark.city === selectedCity);
 
   return (
-    <div>
-      <h2>Landmarks in {selectedCity}</h2>
-      <ul>
+    <div className="flex flex-col items-center">
+      <p className="text-lg font-bold uppercase tracking-wide text-gray-800 mb-2">
+        2. Plan your Route
+      </p>
+      <ul className="mb-6 w-full max-w-md"> {/* Set max width for the list */}
         {filteredLandmarks.map((landmark) => (
-          <li key={landmark._id}>
-            <label>
+          <li key={landmark._id} className="mb-2">
+            <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 checked={selectedLandmarks.includes(landmark)}
                 onChange={() => handleCheckboxChange(landmark)}
+                className="form-checkbox h-5 w-5 text-gray-800"
               />
-              {landmark.name}
+              <span>{landmark.name}</span>
             </label>
+            {selectedLandmarks.includes(landmark) && (
+              <div className="p-2 mt-1 bg-gray-100 rounded-lg"> {/* Add styling to the description */}
+                {landmark.desc}  
+              </div>
+            )}
           </li>
         ))}
       </ul>
+
       <CreateRoute selectedLandmarks={selectedLandmarks} />
     </div>
   );

@@ -6,7 +6,7 @@ const CityList = ({ setSelectedCity }) => {
   };
 
   return (
-    <div className="flex flex-col items-start m-6">
+    <div className="flex flex-col items-center py-32 md:py-0">
       <label htmlFor="city" className="text-lg font-bold uppercase tracking-wide text-gray-800 mb-2">
         1. Select a city to Explore
       </label>
