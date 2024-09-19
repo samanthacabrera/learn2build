@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
+import CityList from './components/CityList';  
 import LandMarkList from './components/LandMarkList';
 import Map from './components/Map';
-import SavedRoutes from './components/SavedRoutes';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
   const [selectedLandmarks, setSelectedLandmarks] = useState([]);
+  const [selectedCity, setSelectedCity] = useState('Denver'); 
 
   useEffect(() => {
     fetch('http://localhost:5001/api/landmarks')
@@ -46,10 +47,12 @@ const App = () => {
             element={
               <>
                 <Welcome />
+                <CityList setSelectedCity={setSelectedCity} />  
                 <LandMarkList 
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
                   setSelectedLandmarks={setSelectedLandmarks} 
+                  selectedCity={selectedCity}  
                 />
                 <Map 
                   landmarks={landmarks} 
