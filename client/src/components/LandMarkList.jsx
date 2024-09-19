@@ -15,11 +15,11 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, sele
   const filteredLandmarks = landmarks.filter((landmark) => landmark.city === selectedCity);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center my-12">
       <p className="text-lg font-bold uppercase tracking-wide text-gray-800 mb-2">
         2. Plan your Route
       </p>
-      <ul className="mb-6 w-full max-w-md"> {/* Set max width for the list */}
+      <ul className="mb-6 w-full max-w-md"> 
         {filteredLandmarks.map((landmark) => (
           <li key={landmark._id} className="mb-2">
             <label className="flex items-center space-x-2">
@@ -32,7 +32,7 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, sele
               <span>{landmark.name}</span>
             </label>
             {selectedLandmarks.includes(landmark) && (
-              <div className="p-2 mt-1 bg-gray-100 rounded-lg"> {/* Add styling to the description */}
+              <div className="p-2 mt-1 bg-gray-100 rounded-lg"> 
                 {landmark.desc}  
               </div>
             )}

@@ -70,7 +70,7 @@ const Profile = () => {
   }, [accessToken]); 
 
   if (error) {
-    return <div className="text-red-600 font-bold text-lg">Error: {error}</div>;
+    return <div className="text-red-600 font-bold text-lg">{error}</div>;
   }
 
   if (!profile) {
@@ -78,13 +78,16 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <h2 className="text-3xl font-extrabold mb-4">{profile.firstname}'s Profile</h2>
-      <div className="flex">
-        <RunLogger />
-        <SavedRoutes />
+    <div className="flex flex-col min-h-screen p-6 bg-gray-50">
+      <h2 className="text-4xl self-center my-12">{profile.firstname}'s Profile</h2>
+      <div className="flex space-x-6">
+        <div className="flex-1 bg-white p-6 rounded shadow-md">
+          <SavedRoutes />
+        </div>
+        <div className="flex-1 bg-white p-6 rounded shadow-md">
+          <RunLogger />
+        </div>
       </div>
-
     </div>
   );
 };
