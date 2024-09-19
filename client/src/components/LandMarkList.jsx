@@ -1,29 +1,30 @@
 import React from 'react';
 import CreateRoute from './CreateRoute';
 
-const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks }) => {
-
+const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, selectedCity }) => {
   const handleCheckboxChange = (landmark) => {
-    setSelectedLandmarks(selected => {
+    setSelectedLandmarks((selected) => {
       if (selected.includes(landmark)) {
-        return selected.filter(l => l !== landmark); 
+        return selected.filter((l) => l !== landmark);
       } else {
-        return [...selected, landmark]; 
+        return [...selected, landmark];
       }
     });
   };
 
+  const filteredLandmarks = landmarks.filter(landmark => landmark.city === selectedCity);
+
   return (
     <div>
-      <h2>Landmarks in Denver</h2>
+      <h2>Landmarks in {selectedCity}</h2>
       <ul>
-        {landmarks.map(landmark => (
+        {filteredLandmarks.map((landmark) => (
           <li key={landmark._id}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedLandmarks.includes(landmark)} // controls checkbox state
-                onChange={() => handleCheckboxChange(landmark)} // handles checkbox change
+                checked={selectedLandmarks.includes(landmark)}
+                onChange={() => handleCheckboxChange(landmark)}
               />
               {landmark.name}
             </label>
