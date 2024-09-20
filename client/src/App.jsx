@@ -49,6 +49,10 @@ const App = () => {
               <>
                 <Welcome />
                 <CityList setSelectedCity={setSelectedCity} />  
+                <Map 
+                  landmarks={landmarks} 
+                  selectedLandmarks={selectedLandmarks} 
+                />
                 <LandMarkList 
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
@@ -56,10 +60,6 @@ const App = () => {
                   selectedCity={selectedCity}  
                 />
                 <PhotoList />
-                <Map 
-                  landmarks={landmarks} 
-                  selectedLandmarks={selectedLandmarks} 
-                />
               </>
             } 
           />
