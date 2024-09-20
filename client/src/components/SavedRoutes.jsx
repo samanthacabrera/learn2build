@@ -54,7 +54,7 @@ const SavedRoutes = () => {
                         >
                             <p className="text-2xl leading-relaxed mt-2">{route.name}</p>
                             <p className="mb-1"><span className="tracking-wider">Description: </span>{route.route}</p>
-                            <button className="text-sm text-white bg-black rounded-lg px-2 py-1 my-1">Select Route</button>
+                            <button className="text-sm text-white bg-black rounded-lg px-2 py-1 my-1">View Route</button>
                         </li>
                     ))
                 ) : (

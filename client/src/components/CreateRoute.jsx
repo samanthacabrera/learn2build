@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 
 const CreateRoute = ({ selectedLandmarks }) => {
@@ -7,14 +7,14 @@ const CreateRoute = ({ selectedLandmarks }) => {
     const [name, setName] = useState(''); 
     const [routes, setRoutes] = useState([]);
 
-    const displayRoute = () => {
+    useEffect(() => {
         if (selectedLandmarks.length < 2) {
             setRoute("You must select at least 2 landmarks to create a route.");
             return;
         }
         const routeString = selectedLandmarks.map(l => l.name).join(' to ');
         setRoute(`Customized route from ${routeString}`);
-    };
+    }, [selectedLandmarks]);
 
     const saveRoute = async () => {
         if (!isSignedIn) {
@@ -35,10 +35,9 @@ const CreateRoute = ({ selectedLandmarks }) => {
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Route saved successfully:', data);
-
                     setRoutes([...routes, { name, route }]);
                     setRoute(''); 
-                    setName(''); // Clear name field after saving
+                    setName(''); 
                 } else {
                     console.error('Failed to save route');
                 }
@@ -55,18 +54,30 @@ const CreateRoute = ({ selectedLandmarks }) => {
     }
 
     return (
-        <div>
-            <button onClick={displayRoute}>Create Route</button>
+        <div className="flex flex-col items-center my-6 p-4 max-w-md w-full">
             {route && (
                 <>
-                    <p>{route}</p>
+                    <p className="text-gray-800 mb-4">{route}</p>
                     <input 
                         type="text" 
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         placeholder="Enter route name" 
+                        className="border border-gray-300 p-2 rounded-lg mb-4 w-full"
                     />
-                    <button onClick={saveRoute}>Save Route</button>
+                    <div className="flex space-x-4">
+                        <button 
+                            onClick={saveRoute} 
+                            className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
+                        >
+                            Save Route
+                        </button>
+                        <button 
+                            className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
+                        >
+                            Start Run
+                        </button>
+                    </div>
                 </>
             )}
         </div>
