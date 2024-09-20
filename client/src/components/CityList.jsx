@@ -7,7 +7,7 @@ const CityList = ({ setSelectedCity }) => {
 
   return (
     <div className="flex flex-col items-center py-32 md:py-0">
-      <label htmlFor="city" className="text-lg font-bold uppercase tracking-wide text-gray-800 mb-2">
+      <label htmlFor="city" className="text-3xl font-bold uppercase tracking-wide text-gray-800 mb-2">
         1. Select a city to Explore
       </label>
       <select 
@@ -17,7 +17,7 @@ const CityList = ({ setSelectedCity }) => {
       >
         <option value="Denver" className="text-gray-800">Denver</option>
         <option value="LA" className="text-gray-800">Los Angeles</option>
-        <option value="Chicago" className="text-gray-800">Chicago</option>
+        <option value="NY" className="text-gray-800">New York</option>
       </select>
     </div>
   );

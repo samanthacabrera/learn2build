@@ -16,7 +16,7 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, sele
 
   return (
     <div className="flex flex-col items-center my-12">
-      <p className="text-lg font-bold uppercase tracking-wide text-gray-800 mb-2">
+      <p className="text-3xl font-bold uppercase tracking-wide text-gray-800 mb-2">
         2. Plan your Route
       </p>
       <ul className="mb-6 w-full max-w-md"> 
