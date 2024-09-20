@@ -31,7 +31,7 @@ const Welcome = () => {
         className="px-8 py-4 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
         onClick={handleButtonClick}
       >
-        {isSignedIn ? 'Start a Run' : 'Get Started'}
+        {isSignedIn ? 'Log a Run' : 'Get Started'}
       </button>
     </div>
   );
