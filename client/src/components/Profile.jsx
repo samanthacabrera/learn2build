@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import RunLogger from './RunLogger';
 import SavedRoutes from './SavedRoutes';
 
 const Profile = () => {
@@ -81,11 +80,9 @@ const Profile = () => {
     <div className="flex flex-col min-h-screen p-6 bg-gray-50">
       <h2 className="text-4xl self-center my-12">{profile.firstname}'s Profile</h2>
       <div className="flex space-x-6">
+
         <div className="flex-1 bg-white p-6 rounded shadow-md">
           <SavedRoutes />
-        </div>
-        <div className="flex-1 bg-white p-6 rounded shadow-md">
-          <RunLogger />
         </div>
       </div>
     </div>
