@@ -38,8 +38,8 @@ const Community = () => {
 
   return (
     <div className="flex flex-col items-center my-12">
-        <h2 className="text-2xl font-bold uppercase tracking-wide text-gray-800 mb-12">
-            This is more than a run. It's a movement.
+        <h2 className="text-4xl font-bold uppercase tracking-wide text-gray-800 mb-12">
+            More than a run. It's a movement.
         </h2>
 
       <div className="w-full max-w-4xl text-center mb-8">
