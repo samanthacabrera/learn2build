@@ -5,7 +5,7 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const [accessToken, setAccessToken] = useState(import.meta.env.VITE_STRAVA_ACCESS_TOKEN);
-  const refreshToken = import.meta.env.VITE_STRAVA_REFRESH_TOKEN; 
+  const refreshToken = import.meta.env.VITE_STRAVA_REFRESH_TOKEN;
 
   const refreshAccessToken = async () => {
     try {
@@ -15,8 +15,8 @@ const Profile = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          client_id: import.meta.env.VITE_STRAVA_CLIENT_ID, 
-          client_secret: import.meta.env.VITE_STRAVA_CLIENT_SECRET, 
+          client_id: import.meta.env.VITE_STRAVA_CLIENT_ID,
+          client_secret: import.meta.env.VITE_STRAVA_CLIENT_SECRET,
           refresh_token: refreshToken,
           grant_type: 'refresh_token',
         }),
@@ -29,7 +29,7 @@ const Profile = () => {
       }
 
       setAccessToken(data.access_token);
-      localStorage.setItem('strava_access_token', data.access_token); 
+      localStorage.setItem('strava_access_token', data.access_token);
     } catch (error) {
       console.error('Error refreshing access token:', error.message);
       setError(`Error refreshing access token: ${error.message}`);
@@ -48,7 +48,7 @@ const Profile = () => {
         });
 
         if (response.status === 401) {
-          console.log('Token expired, refreshing...'); 
+          console.log('Token expired, refreshing...');
           await refreshAccessToken();
           return;
         }
@@ -60,13 +60,13 @@ const Profile = () => {
         const data = await response.json();
         setProfile(data);
       } catch (error) {
-        console.error('Error fetching profile:', error.message); 
+        console.error('Error fetching profile:', error.message);
         setError(`Error fetching profile: ${error.message}`);
       }
     };
 
     fetchProfile();
-  }, [accessToken]); 
+  }, [accessToken]);
 
   if (error) {
     return <div className="text-red-600 font-bold text-lg">{error}</div>;
@@ -77,11 +77,12 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen p-6 bg-gray-50">
-      <h2 className="text-4xl self-center my-12">{profile.firstname}'s Profile</h2>
-      <div className="flex space-x-6">
-
-        <div className="flex-1 bg-white p-6 rounded shadow-md">
+    <div className="flex flex-col min-h-screen p-8 bg-gray-100">
+      <h2 className="text-5xl font-extrabold text-center my-16 text-gray-900">
+        {profile.firstname}'s Profile
+      </h2>
+      <div className="flex space-x-8">
+        <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
           <SavedRoutes />
         </div>
       </div>

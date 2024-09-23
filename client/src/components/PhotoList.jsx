@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Carousel from './Carousel';
+import React, { useState } from 'react';  
 
 const PhotoList = () => {
   const landmarkPhotos = {
@@ -75,13 +74,6 @@ const PhotoList = () => {
         </div>
       </div>
 
-      {isModalOpen && (
-        <Carousel
-          landmark={activeLandmark}
-          photos={landmarkPhotos[activeLandmark]}
-          onClose={closeModal}
-        />
-      )}
     </div>
   );
 };
