@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
 import CitySelector from './components/CitySelector';  
 import LandmarkSelector from './components/LandmarkSelector';
-import Map from './components/Map';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 import PhotoUpload from './components/PhotoUpload';
@@ -50,10 +49,6 @@ const App = () => {
               <>
                 <Welcome />
                 <CitySelector setSelectedCity={setSelectedCity} />  
-                <Map 
-                  landmarks={landmarks} 
-                  selectedLandmarks={selectedLandmarks} 
-                />
                 <LandmarkSelector 
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
