@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CityList = ({ setSelectedCity }) => {
+const CitySelector = ({ setSelectedCity }) => {
   const handleCityChange = (e) => {
     setSelectedCity(e.target.value);  
   };
@@ -23,4 +23,4 @@ const CityList = ({ setSelectedCity }) => {
   );
 };
 
-export default CityList;
+export default CitySelector;

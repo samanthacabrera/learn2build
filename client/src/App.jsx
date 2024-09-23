@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
-import CityList from './components/CityList';  
-import LandMarkList from './components/LandMarkList';
+import CitySelector from './components/CitySelector';  
+import LandmarkSelector from './components/LandmarkSelector';
 import Map from './components/Map';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
-import PhotoList from './components/PhotoList';
+import PhotoUpload from './components/PhotoUpload';
+import Community from './components/Community';
 
 const App = () => {
   const [landmarks, setLandmarks] = useState([]);
@@ -48,18 +49,19 @@ const App = () => {
             element={
               <>
                 <Welcome />
-                <CityList setSelectedCity={setSelectedCity} />  
+                <CitySelector setSelectedCity={setSelectedCity} />  
                 <Map 
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
                 />
-                <LandMarkList 
+                <LandmarkSelector 
                   landmarks={landmarks} 
                   selectedLandmarks={selectedLandmarks} 
                   setSelectedLandmarks={setSelectedLandmarks} 
                   selectedCity={selectedCity}  
                 />
-                <PhotoList />
+                <PhotoUpload />
+                <Community/>
               </>
             } 
           />

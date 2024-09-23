@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateRoute from './CreateRoute';
 
-const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, selectedCity }) => {
+const LandmarkSelector = ({ landmarks, selectedLandmarks, setSelectedLandmarks, selectedCity }) => {
     const handleCheckboxChange = (landmark) => {
         setSelectedLandmarks((selected) => {
             if (selected.includes(landmark)) {
@@ -45,4 +45,4 @@ const LandMarkList = ({ landmarks, selectedLandmarks, setSelectedLandmarks, sele
     );
 };
 
-export default LandMarkList;
+export default LandmarkSelector;
