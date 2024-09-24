@@ -1,7 +1,6 @@
 import React from 'react';
 import { useUser, SignedIn, SignedOut } from '@clerk/clerk-react';
-import RunLogs from './RunLogs';
-
+import RouteLogs from './RouteLogs';
 const Profile = () => {
   const { user } = useUser(); 
   
@@ -15,6 +14,7 @@ const Profile = () => {
         ) : (
           <p>loading user information...</p> 
         )}
+        <RouteLogs />
       </SignedIn>
 
       <SignedOut>
