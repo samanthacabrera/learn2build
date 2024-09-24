@@ -74,9 +74,9 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
     return (
         <div className="flex flex-col items-center">
             <h2 className="text-4xl font-bold uppercase tracking-wide text-gray-800 my-12">2. Plan Your Route</h2> 
-            <div className="w-full max-w-7xl px-4 md:px-24 flex relative">
+            <div className="w-full max-w-7xl px-4 md:px-24 flex flex-col md:flex-row relative">
 
-                <div className="w-2/3 relative">
+                <div className="w-full md:w-2/3 relative">
                     <ReactMapGL
                         {...viewport}
                         width="100%"
@@ -136,7 +136,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
                     </div>
                 </div>
 
-                <div className="w-1/3 p-4 flex flex-col bg-gray-50 rounded-lg shadow-md h-auto ml-4">
+                <div className="w-full md:w-1/3 p-4 flex flex-col bg-gray-50 rounded-lg shadow-md h-auto mt-4 md:mt-0 md:ml-4">
                     {landmarkDetails ? (
                         <>
                             <h2 className="text-2xl mb-2">{landmarkDetails.name}</h2>

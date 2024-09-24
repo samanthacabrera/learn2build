@@ -59,15 +59,18 @@ const Community = () => {
         </ul>
 
         <div className={`transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+          <p className="my-4 text-gray-800">
+            "{landmarkPhotos[currentCity][currentIndex].message}"
+            <span className="text-gray-700 italic"> - {landmarkPhotos[currentCity][currentIndex].user}</span>
+          </p>
+        
+          <div className="flex justify-center">
           <img
             src={landmarkPhotos[currentCity][currentIndex].url}
             alt={currentCity}
-            className="w-full h-96 object-cover rounded-lg shadow-lg"
+            className="w-3/4 h-full object-cover rounded-lg shadow-lg"
           />
-          <p className="mt-4 text-gray-800">
-            "{landmarkPhotos[currentCity][currentIndex].message}"
-          </p>
-          <p className="text-gray-700 italic">- {landmarkPhotos[currentCity][currentIndex].user}</p>
+          </div>
         </div>
       </div>
     </div>
