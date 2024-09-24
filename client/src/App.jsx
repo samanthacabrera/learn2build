@@ -55,7 +55,7 @@ const App = () => {
                   setSelectedLandmarks={setSelectedLandmarks} 
                   selectedCity={selectedCity}  
                 />
-                <PhotoUpload />
+                <PhotoUpload selectedLandmarks={selectedLandmarks} />
                 <Community/>
               </>
             } 
