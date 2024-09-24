@@ -2,18 +2,32 @@ import React, { useState, useEffect } from 'react';
 import ReactMapGL, { Marker, Source, Layer } from 'react-map-gl';
 import CreateRoute from './CreateRoute';
 
-const LandmarkSelector = ({ landmarks }) => {
+const cityCoordinates = {
+    Denver: { latitude: 39.7392, longitude: -104.9903 },
+    LA: { latitude: 34.0522, longitude: -118.2437 },
+    NY: { latitude: 40.7128, longitude: -74.0060 },
+};
+
+const LandmarkSelector = ({ landmarks, selectedCity }) => {
     const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
     const [viewport, setViewport] = useState({
-        latitude: 39.7392, // Denver coordinates
-        longitude: -104.9903,
+        latitude: cityCoordinates[selectedCity]?.latitude || 39.7392, // Default to Denver
+        longitude: cityCoordinates[selectedCity]?.longitude || -104.9903,
         zoom: 11,
     });
 
     const [selectedLandmarks, setSelectedLandmarks] = useState([]);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
     const [landmarkDetails, setLandmarkDetails] = useState(null);
+
+    useEffect(() => {
+        setViewport((prevViewport) => ({
+            ...prevViewport,
+            latitude: cityCoordinates[selectedCity]?.latitude || prevViewport.latitude,
+            longitude: cityCoordinates[selectedCity]?.longitude || prevViewport.longitude,
+        }));
+    }, [selectedCity]);
 
     useEffect(() => {
         const fetchRoute = async () => {
