@@ -10,62 +10,62 @@ import PhotoUpload from './components/PhotoUpload';
 import Community from './components/Community';
 
 const App = () => {
-  const [landmarks, setLandmarks] = useState([]);
-  const [selectedLandmarks, setSelectedLandmarks] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('Denver');
-  
-  useEffect(() => {
-    fetch('http://localhost:5001/api/landmarks')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        setLandmarks(data);
-      })
-      .catch(error => {
-        console.error('Error fetching landmarks:', error);
-      });
-  }, []);
+    const [landmarks, setLandmarks] = useState([]);
+    const [selectedLandmarks, setSelectedLandmarks] = useState([]);
+    const [selectedCity, setSelectedCity] = useState('Denver');
 
-  return (
-    <Router>
-      <div>
-        <header>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </header>
+    useEffect(() => {
+        fetch('http://localhost:5001/api/landmarks')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setLandmarks(data);
+            })
+            .catch(error => {
+                console.error('Error fetching landmarks:', error);
+            });
+    }, []);
 
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <>
-                <Welcome />
-                <CitySelector setSelectedCity={setSelectedCity} />  
-                <LandmarkSelector 
-                  landmarks={landmarks} 
-                  selectedLandmarks={selectedLandmarks} 
-                  setSelectedLandmarks={setSelectedLandmarks} 
-                  selectedCity={selectedCity}  
-                />
-                <PhotoUpload selectedLandmarks={selectedLandmarks} />
-                <Community/>
-              </>
-            } 
-          />
-          <Route path="/profile" element={<Profile />}/> 
-        </Routes>
-        <Footer/>
-      </div>
-    </Router>
-  );
+    return (
+        <Router>
+            <div>
+                <header>
+                    <SignedOut>
+                        <SignInButton />
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
+                </header>
+
+                <Routes>
+                    <Route 
+                        path="/" 
+                        element={
+                            <>
+                                <Welcome />
+                                <CitySelector setSelectedCity={setSelectedCity} />  
+                                <LandmarkSelector 
+                                    landmarks={landmarks} 
+                                    selectedLandmarks={selectedLandmarks} 
+                                    setSelectedLandmarks={setSelectedLandmarks} 
+                                    selectedCity={selectedCity}  
+                                />
+                                <PhotoUpload selectedLandmarks={selectedLandmarks} />
+                                <Community />
+                            </>
+                        } 
+                    />
+                    <Route path="/profile" element={<Profile />} /> 
+                </Routes>
+                <Footer />
+            </div>
+        </Router>
+    );
 };
 
 export default App;

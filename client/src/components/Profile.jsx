@@ -1,17 +1,25 @@
 import React from 'react';
-import LoggedRuns from './LoggedRuns';
+import { useUser, SignedIn, SignedOut } from '@clerk/clerk-react';
+import RunLogs from './RunLogs';
 
 const Profile = () => {
+  const { user } = useUser(); 
+  
   return (
-    <div className="flex flex-col min-h-screen p-8 bg-gray-100">
-      <h2 className="text-5xl font-extrabold text-center my-16 text-gray-900">
-        My Profile
-      </h2>
-      <div className="flex space-x-8">
-        <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
-          <LoggedRuns />
-        </div>
-      </div>
+    <div className="flex flex-col min-h-screen items-center">
+      <h2 className="text-5xl mb-4">My Profile</h2>
+      
+      <SignedIn>
+        {user ? ( 
+          <p>welcome, {user.firstName}!</p>
+        ) : (
+          <p>loading user information...</p> 
+        )}
+      </SignedIn>
+
+      <SignedOut>
+        <p>please sign in to view your profile.</p>
+      </SignedOut>
     </div>
   );
 };

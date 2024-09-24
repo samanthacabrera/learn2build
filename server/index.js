@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const landmarksRoutes = require('./endpoints/landmarks');
 const routesRoutes = require('./endpoints/routes');
+const logsRoutes = require('./endpoints/logs');
 const { connectToDatabase, closeConnection } = require('./db');
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/landmarks', landmarksRoutes);
 app.use('/api/routes', routesRoutes);
+app.use('/api/logs', logsRoutes);
 
 
 // start server
@@ -46,10 +48,4 @@ process.on('SIGINT', () => {
         process.exit(1);
     });
 });
-
-
-
-
-
-
 

@@ -35,18 +35,5 @@ router.post('/save-route', async (req, res) => {
     }
 });
 
-router.get('/logged-runs', async (req, res) => {
-    try {
-        const db = client.db('learn2build');
-        const routesCollection = db.collection('routes');
-        const savedRoutes = await routesCollection.find().toArray();
-        res.status(200).json(savedRoutes);
-    } catch (error) {
-        console.error("Failed to fetch logged runs", error);
-        res.status(500).json({ error: 'Failed to fetch logged runs' });
-    }
-});
-
-
 module.exports = router;
 

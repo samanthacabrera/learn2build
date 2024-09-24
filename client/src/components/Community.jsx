@@ -34,7 +34,7 @@ const Community = () => {
   }, [currentIndex, currentCity]);
 
   return (
-    <div className="flex flex-col items-center my-12">
+    <div id="community" className="flex flex-col items-center my-12">
       <h2 className="text-4xl md:text-7xl font-bold uppercase tracking-wide leading-loose text-gray-800 mt-24 mb-6">
         More than a run. <br/>It's a movement.
       </h2>

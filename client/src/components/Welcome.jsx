@@ -1,17 +1,18 @@
 import React from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
-import { useNavigate } from 'react-router-dom'; 
 
 const Welcome = () => {
   const { isSignedIn } = useUser();
   const { redirectToSignUp } = useClerk();
-  const navigate = useNavigate();
 
   const handleButtonClick = () => {
     if (!isSignedIn) {
       redirectToSignUp(); 
     } else {
-      navigate('/run-logger'); 
+      const communitySection = document.getElementById("community");
+      if (communitySection) {
+        communitySection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -31,7 +32,7 @@ const Welcome = () => {
         className="px-8 py-4 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
         onClick={handleButtonClick}
       >
-        {isSignedIn ? 'Log a Run' : 'Get Started'}
+        {isSignedIn ? 'Get Inspired' : 'Get Started'}
       </button>
     </div>
   );
