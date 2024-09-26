@@ -18,15 +18,15 @@ const Welcome = ({ setSelectedCity }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-white text-center p-4 sm:p-8">
+    <div className="flex flex-col items-center justify-center bg-white text-center mt-8 md:mt-20 px-4">
       <h1 className="text-5xl sm:text-8xl font-extrabold text-black mb-4 sm:mb-8 tracking-wider uppercase">
         <span className="line-through">See</span> Run the City
       </h1>
-      <p className="text-lg sm:text-2xl text-gray-800 max-w-3xl mb-8 sm:mb-12 leading-relaxed tracking-wide">
-        Combine fitness and adventure. <span className="italic">Run The City</span> transforms your business trips and vacations into 
+      <p className="text-lg sm:text-2xl text-gray-800 max-w-3xl mb-8 leading-relaxed tracking-wide">
+        <span className="italic">Run The City</span> transforms your business trips and vacations into 
         active explorations. Stay fit and see the best of every city, one run at a time.
       </p>
-      <p className="text-base sm:text-xl text-gray-700 max-w-2xl mb-4 sm:mb-8 leading-loose">
+      <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mb-4 tracking-wide leading-loose">
         Select the city that you want to explore. 
       </p>
       
