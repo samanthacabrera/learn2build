@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import RunTracker from './RunTracker'; 
 
-const CreateRoute = ({ selectedLandmarks }) => {
+const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
     const { isSignedIn } = useAuth(); 
     const [route, setRoute] = useState('');
     const [name, setName] = useState(''); 
-    const [routes, setRoutes] = useState([]);
+    const [startRun, setStartRun] = useState(false);
 
     useEffect(() => {
         if (selectedLandmarks.length < 2) {
@@ -35,9 +36,6 @@ const CreateRoute = ({ selectedLandmarks }) => {
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Route saved successfully:', data);
-                    setRoutes([...routes, { name, route }]);
-                    setRoute(''); 
-                    setName(''); 
                 } else {
                     console.error('Failed to save route');
                 }
@@ -67,12 +65,13 @@ const CreateRoute = ({ selectedLandmarks }) => {
                     />
                     <div className="flex space-x-4">
                         <button 
-                            onClick={saveRoute} 
+                            onClick={() => setStartRun(true)} 
                             className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
                         >
                             Start Run 
                         </button>
                     </div>
+                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} mapboxToken={mapboxToken} />}
                 </>
             )}
         </div>
