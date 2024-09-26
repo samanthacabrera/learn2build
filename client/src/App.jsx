@@ -6,7 +6,6 @@ import CitySelector from './components/CitySelector';
 import LandmarkSelector from './components/LandmarkSelector';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
-import PhotoUpload from './components/PhotoUpload';
 import Community from './components/Community';
 
 const App = () => {
@@ -55,7 +54,6 @@ const App = () => {
                                     setSelectedLandmarks={setSelectedLandmarks} 
                                     selectedCity={selectedCity}  
                                 />
-                                <PhotoUpload selectedLandmarks={selectedLandmarks} />
                                 <Community />
                             </>
                         } 
