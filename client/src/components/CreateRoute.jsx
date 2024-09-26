@@ -5,47 +5,36 @@ import RunTracker from './RunTracker';
 const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
     const { isSignedIn } = useAuth(); 
     const [route, setRoute] = useState('');
-    const [name, setName] = useState(''); 
     const [startRun, setStartRun] = useState(false);
+    const [currentLocation, setCurrentLocation] = useState(null);
 
     useEffect(() => {
-        if (selectedLandmarks.length < 2) {
-            setRoute("You must select at least 2 landmarks to create a route.");
+        if (!selectedLandmarks.length) {
+            setRoute("You must select at least one landmark to create a route.");
             return;
         }
-        const routeString = selectedLandmarks.map(l => l.name).join(' to ');
-        setRoute(`Customized route from ${routeString}`);
+
+        const landmarksRoute = selectedLandmarks.map(l => l.name).join(' to ');
+        setRoute(`Customized route from your location to ${landmarksRoute} to your location`);
     }, [selectedLandmarks]);
 
-    // const saveRoute = async () => {
-    //     if (!isSignedIn) {
-    //         console.error('You must be signed in to save a route.');
-    //         return;
-    //     }
-
-    //     if (route && name) {
-    //         try {
-    //             const response = await fetch('http://localhost:5001/api/routes/save-route', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 },
-    //                 body: JSON.stringify({ name, route })
-    //             });
-
-    //             if (response.ok) {
-    //                 const data = await response.json();
-    //                 console.log('Route saved successfully:', data);
-    //             } else {
-    //                 console.error('Failed to save route');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error saving route:', error);
-    //         }
-    //     } else {
-    //         console.error('Route or name is missing');
-    //     }
-    // };
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setCurrentLocation({ latitude, longitude });
+                },
+                (error) => {
+                    console.error("Error getting location: ", error);
+                    alert("Please allow location access to create a route.");
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            alert("Geolocation is not supported by your browser.");
+        }
+    }, []);
 
     if (!isSignedIn) {
         return <div>Please sign in to create a route.</div>;
@@ -59,23 +48,24 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
         <div className="flex flex-col items-center my-6 p-4 max-w-md w-full">
             {route && (
                 <>
-                     <p className="text-gray-800 mb-4">{route}</p>
-                    {/*<input 
-                        type="text" 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        placeholder="Enter route name" 
-                        className="border border-gray-300 p-2 rounded-lg mb-4 w-full"
-                    /> */}
+                    <p className="text-gray-800 mb-4">{route}</p>
                     <div className="flex space-x-4">
                         <button 
                             onClick={() => setStartRun(true)} 
-                            className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
+                            className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition duration-300 
+                                ${!selectedLandmarks.length || !currentLocation ? 'cursor-not-allowed' : 'hover:bg-gray-700'}`} 
+                            disabled={!selectedLandmarks.length || !currentLocation}
                         >
                             Start Run 
                         </button>
                     </div>
-                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} onClose={handleClose} />}
+                    {startRun && (
+                        <RunTracker 
+                            selectedLandmarks={selectedLandmarks} 
+                            userLocation={currentLocation} 
+                            onClose={handleClose} 
+                        />
+                    )}
                 </>
             )}
         </div>
