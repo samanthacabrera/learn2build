@@ -17,38 +17,38 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
         setRoute(`Customized route from ${routeString}`);
     }, [selectedLandmarks]);
 
-    const saveRoute = async () => {
-        if (!isSignedIn) {
-            console.error('You must be signed in to save a route.');
-            return;
-        }
+    // const saveRoute = async () => {
+    //     if (!isSignedIn) {
+    //         console.error('You must be signed in to save a route.');
+    //         return;
+    //     }
 
-        if (route && name) {
-            try {
-                const response = await fetch('http://localhost:5001/api/routes/save-route', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, route })
-                });
+    //     if (route && name) {
+    //         try {
+    //             const response = await fetch('http://localhost:5001/api/routes/save-route', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //                 body: JSON.stringify({ name, route })
+    //             });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Route saved successfully:', data);
-                } else {
-                    console.error('Failed to save route');
-                }
-            } catch (error) {
-                console.error('Error saving route:', error);
-            }
-        } else {
-            console.error('Route or name is missing');
-        }
-    };
+    //             if (response.ok) {
+    //                 const data = await response.json();
+    //                 console.log('Route saved successfully:', data);
+    //             } else {
+    //                 console.error('Failed to save route');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error saving route:', error);
+    //         }
+    //     } else {
+    //         console.error('Route or name is missing');
+    //     }
+    // };
 
     if (!isSignedIn) {
-        return <div>Please sign in to create and save routes.</div>;
+        return <div>Please sign in to create a route.</div>;
     }
 
     const handleClose = () => {
@@ -59,14 +59,14 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
         <div className="flex flex-col items-center my-6 p-4 max-w-md w-full">
             {route && (
                 <>
-                    <p className="text-gray-800 mb-4">{route}</p>
-                    <input 
+                     <p className="text-gray-800 mb-4">{route}</p>
+                    {/*<input 
                         type="text" 
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
                         placeholder="Enter route name" 
                         className="border border-gray-300 p-2 rounded-lg mb-4 w-full"
-                    />
+                    /> */}
                     <div className="flex space-x-4">
                         <button 
                             onClick={() => setStartRun(true)} 
@@ -75,7 +75,7 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
                             Start Run 
                         </button>
                     </div>
-                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} mapboxToken={mapboxToken} onClose={handleClose} />}
+                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} onClose={handleClose} />}
                 </>
             )}
         </div>

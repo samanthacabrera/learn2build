@@ -7,7 +7,8 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [distanceToNextLandmark, setDistanceToNextLandmark] = useState(0);
     const [nextLandmarkName, setNextLandmarkName] = useState('');
-    const [modalOpen, setModalOpen] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); 
 
     const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -18,24 +19,48 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         setCurrentLocation({ latitude, longitude });
+                        setIsLoading(false); 
+                        setModalOpen(true); 
                     },
                     (error) => {
                         console.error("Error getting location: ", error);
                         alert("Please allow location access to track your run.");
-                        setModalOpen(false); 
                     }
                 );
             } else {
                 console.error("Geolocation is not supported by this browser.");
                 alert("Geolocation is not supported by your browser.");
-                setModalOpen(false); 
             }
         };
 
-        if (modalOpen) {
-            askForLocation();
+        askForLocation(); 
+    }, []);
+
+    useEffect(() => {
+        let watchId;
+        
+        if (isRunning && currentLocation) {
+            watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    const newLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    };
+                    updateTotalDistance(newLocation);
+                    setCurrentLocation(newLocation); 
+                },
+                (error) => {
+                    console.error("Error watching position: ", error);
+                }
+            );
         }
-    }, [modalOpen]);
+
+        return () => {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+            }
+        };
+    }, [isRunning, currentLocation]);
 
     useEffect(() => {
         let interval;
@@ -47,15 +72,13 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
         return () => clearInterval(interval);
     }, [isRunning]);
 
-    useEffect(() => {
-        if (isRunning && currentLocation) {
-            const closestLandmark = findClosestLandmark(currentLocation.latitude, currentLocation.longitude);
-            if (closestLandmark) {
-                setNextLandmarkName(closestLandmark.name);
-                calculateDistanceToNextLandmark(currentLocation.latitude, currentLocation.longitude, closestLandmark);
-            }
+    const updateTotalDistance = async (newLocation) => {
+        const closestLandmark = findClosestLandmark(newLocation.latitude, newLocation.longitude);
+        if (closestLandmark) {
+            setNextLandmarkName(closestLandmark.name);
+            await calculateDistanceToNextLandmark(newLocation.latitude, newLocation.longitude, closestLandmark);
         }
-    }, [isRunning, currentLocation]);
+    };
 
     const findClosestLandmark = (latitude, longitude) => {
         if (!selectedLandmarks.length) return null;
@@ -70,7 +93,7 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
     };
 
     const getDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371000; // Radius of the Earth in meters
+        const R = 6371000; 
         const φ1 = (lat1 * Math.PI) / 180;
         const φ2 = (lat2 * Math.PI) / 180;
         const Δφ = ((lat2 - lat1) * Math.PI) / 180;
@@ -81,7 +104,7 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
                   Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c;
+        return R * c; 
     };
 
     const calculateDistanceToNextLandmark = async (latitude, longitude, landmark) => {
@@ -97,8 +120,6 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
             if (data.routes.length > 0) {
                 const distance = data.routes[0].distance; 
                 setDistanceToNextLandmark(distance);
-                setTotalDistance(prev => prev + distance); 
-                console.log(`Distance to ${landmark.name}: ${distance} meters`); 
             } else {
                 console.error('No routes found.');
             }
@@ -119,7 +140,14 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
 
     return (
         <>
-            {modalOpen && (
+            {isLoading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-bold">Loading your location...</h3>
+                    </div>
+                </div>
+            )}
+            {modalOpen && !isLoading && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-bold">Run Tracker</h3>
