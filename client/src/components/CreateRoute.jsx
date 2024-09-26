@@ -51,6 +51,10 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
         return <div>Please sign in to create and save routes.</div>;
     }
 
+    const handleClose = () => {
+        setStartRun(false); 
+    };
+
     return (
         <div className="flex flex-col items-center my-6 p-4 max-w-md w-full">
             {route && (
@@ -71,7 +75,7 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
                             Start Run 
                         </button>
                     </div>
-                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} mapboxToken={mapboxToken} />}
+                    {startRun && <RunTracker selectedLandmarks={selectedLandmarks} mapboxToken={mapboxToken} onClose={handleClose} />}
                 </>
             )}
         </div>
