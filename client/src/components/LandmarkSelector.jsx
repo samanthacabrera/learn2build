@@ -73,7 +73,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
 
     return (
         <div className="flex flex-col items-center">
-            <h2 className="text-4xl font-bold uppercase tracking-wide text-gray-800 my-12">2. Plan Your Route</h2> 
+            <h2 className="text-4xl font-bold uppercase tracking-wide text-gray-800 mb-12">Plan Your Route</h2> 
             <div className="w-full max-w-7xl px-4 md:px-24 flex flex-col md:flex-row relative">
 
                 <div className="w-full md:w-2/3 relative">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
-import CitySelector from './components/CitySelector';  
 import LandmarkSelector from './components/LandmarkSelector';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
@@ -46,8 +45,7 @@ const App = () => {
                         path="/" 
                         element={
                             <>
-                                <Welcome />
-                                <CitySelector setSelectedCity={setSelectedCity} />  
+                                <Welcome setSelectedCity={setSelectedCity} />  {/* Pass setSelectedCity here */}
                                 <LandmarkSelector 
                                     landmarks={landmarks} 
                                     selectedLandmarks={selectedLandmarks} 

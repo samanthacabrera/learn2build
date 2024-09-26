@@ -6,10 +6,8 @@ const CitySelector = ({ setSelectedCity }) => {
   };
 
   return (
-    <div className="flex flex-col items-center py-32 md:py-0">
-      <label htmlFor="city" className="text-4xl font-bold uppercase tracking-wide text-gray-800 my-12">
-        1. Select a City
-      </label>
+    <div className="flex flex-col items-center">
+      <label htmlFor="city"></label>
       <select 
         id="city" 
         onChange={handleCityChange}

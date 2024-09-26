@@ -1,7 +1,8 @@
 import React from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
+import CitySelector from './CitySelector'; 
 
-const Welcome = () => {
+const Welcome = ({ setSelectedCity }) => {  
   const { isSignedIn } = useUser();
   const { redirectToSignUp } = useClerk();
 
@@ -25,15 +26,20 @@ const Welcome = () => {
         Combine fitness and adventure. <span className="italic">Run The City</span> transforms your business trips and vacations into 
         active explorations. Stay fit and see the best of every city, one run at a time.
       </p>
-      <p className="text-base sm:text-xl text-gray-700 max-w-2xl mb-8 sm:mb-16 leading-loose">
-        Join a community of driven individuals. Share your routes and inspire others by tagging us on social media.
+      <p className="text-base sm:text-xl text-gray-700 max-w-2xl mb-4 sm:mb-8 leading-loose">
+        Select the city that you want to explore. 
       </p>
-      <button 
-        className="px-6 sm:px-8 py-3 sm:py-4 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
-        onClick={handleButtonClick}
-      >
-        {isSignedIn ? 'Get Inspired' : 'Get Started'}
-      </button>
+      
+      {isSignedIn ? (
+        <CitySelector setSelectedCity={setSelectedCity} />
+      ) : (
+        <button 
+          className="px-6 sm:px-8 py-3 sm:py-4 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
+          onClick={handleButtonClick}
+        >
+          Get Started
+        </button>
+      )}
     </div>
   );
 };
