@@ -6,6 +6,7 @@ import LandmarkSelector from './components/LandmarkSelector';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 import Community from './components/Community';
+import FeaturedRoutes from './components/FeaturedRoutes';
 
 const App = () => {
     const [landmarks, setLandmarks] = useState([]);
@@ -45,13 +46,14 @@ const App = () => {
                         path="/" 
                         element={
                             <>
-                                <Welcome setSelectedCity={setSelectedCity} />  {/* Pass setSelectedCity here */}
+                                <Welcome setSelectedCity={setSelectedCity} /> 
                                 <LandmarkSelector 
                                     landmarks={landmarks} 
                                     selectedLandmarks={selectedLandmarks} 
                                     setSelectedLandmarks={setSelectedLandmarks} 
                                     selectedCity={selectedCity}  
                                 />
+                                <FeaturedRoutes/>
                                 <Community />
                             </>
                         } 
