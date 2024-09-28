@@ -7,27 +7,29 @@ import Profile from './components/Profile';
 import Footer from './components/Footer';
 import Community from './components/Community';
 import FeaturedRoutes from './components/FeaturedRoutes';
+import RunTracker from './components/RunTracker'; 
 
 const App = () => {
     const [landmarks, setLandmarks] = useState([]);
     const [selectedLandmarks, setSelectedLandmarks] = useState([]);
     const [selectedCity, setSelectedCity] = useState('Denver');
+    const [startRun, setStartRun] = useState(false); 
 
     useEffect(() => {
         fetch('http://localhost:5001/api/landmarks')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setLandmarks(data);
-            })
-            .catch(error => {
-                console.error('Error fetching landmarks:', error);
-            });
+            .then(response => response.json())
+            .then(data => setLandmarks(data))
+            .catch(error => console.error('Error fetching landmarks:', error));
     }, []);
+
+    const handleSelectRoute = (routeLandmarks) => {
+        setSelectedLandmarks(routeLandmarks);
+        setStartRun(true); 
+    };
+
+    const handleCloseRunTracker = () => {
+        setStartRun(false); 
+    };
 
     return (
         <Router>
@@ -53,8 +55,14 @@ const App = () => {
                                     setSelectedLandmarks={setSelectedLandmarks} 
                                     selectedCity={selectedCity}  
                                 />
-                                <FeaturedRoutes/>
+                                <FeaturedRoutes onSelectRoute={handleSelectRoute} /> 
                                 <Community />
+                                {startRun && (
+                                    <RunTracker 
+                                        selectedLandmarks={selectedLandmarks} 
+                                        onClose={handleCloseRunTracker} 
+                                    />
+                                )}
                             </>
                         } 
                     />
