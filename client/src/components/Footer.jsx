@@ -3,14 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-4 mt-auto">
-      <div className="container mx-auto flex justify-between items-center">
-        <div>
-          <Link to="/" className="hover:text-gray-400 transition-colors">Home</Link>
-        </div>
-        <div>
-          <Link to="/profile" className="hover:text-gray-400 transition-colors">Profile</Link>
-        </div>
+    <footer className="bg-black text-white text-sm py-4 mt-auto">
+      <div className="container mx-auto flex justify-center items-center">
+          <p>made with love by <a href="https://github.com/samanthacabrera" target="_blank" rel="noopener noreferrer" className="hover:underline transition duration-500">sam</a></p>
       </div>
     </footer>
   );

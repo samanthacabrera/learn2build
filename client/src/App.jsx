@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
 import LandmarkSelector from './components/LandmarkSelector';
-import Profile from './components/Profile';
-import Footer from './components/Footer';
 import FeaturedRoutes from './components/FeaturedRoutes';
 import RunTracker from './components/RunTracker'; 
+// import Profile from './components/Profile';
+import Footer from './components/Footer';
 
 const App = () => {
     const [landmarks, setLandmarks] = useState([]);
@@ -21,11 +21,6 @@ const App = () => {
             .catch(error => console.error('Error fetching landmarks:', error));
     }, []);
 
-    const handleSelectRoute = (routeLandmarks) => {
-        setSelectedLandmarks(routeLandmarks);
-        setStartRun(true); 
-    };
-
     const handleCloseRunTracker = () => {
         setStartRun(false); 
     };
@@ -33,15 +28,15 @@ const App = () => {
     return (
         <Router>
             <div>
-                <header>
+                <header className="p-2">
                     <SignedOut>
                         <SignInButton />
                     </SignedOut>
                     <SignedIn>
-                        <UserButton />
+                        <SignOutButton />
                     </SignedIn>
                 </header>
-
+          
                 <Routes>
                     <Route 
                         path="/" 
@@ -56,7 +51,6 @@ const App = () => {
                                 />
                                 <FeaturedRoutes
                                     selectedCity={selectedCity}
-                                    onSelectRoute={handleSelectRoute}
                                 /> 
                     
                                 {startRun && (
@@ -68,9 +62,9 @@ const App = () => {
                             </>
                         } 
                     />
-                    <Route path="/profile" element={<Profile />} /> 
+                    {/* <Route path="/profile" element={<Profile />} />  */}
                 </Routes>
-                <Footer />
+            <Footer/>
             </div>
         </Router>
     );

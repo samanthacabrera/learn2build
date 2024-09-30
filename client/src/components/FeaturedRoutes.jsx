@@ -60,7 +60,7 @@ const FeaturedRoutes = ({ onSelectRoute, selectedCity }) => {
             <li key={route.id} className="p-8 bg-white rounded-lg shadow-xl border-2 border-gray-600">
               <h2 className="text-2xl font-bold">{route.name}</h2>
               <p className="mt-3 text-lg text-gray-700">{route.description}</p>
-              <p className="mt-5 font-semibold text-md">Landmarks & Photo Ideas:</p>
+              <p className="text-lg tracking-wide my-1">Landmarks & Photo Ideas:</p>
               <ul className="list-disc list-inside space-y-2">
                 {route.landmarks.map((landmark, index) => (
                   <li key={index} className="text-gray-800 text-md">
@@ -68,8 +68,8 @@ const FeaturedRoutes = ({ onSelectRoute, selectedCity }) => {
                   </li>
                 ))}
               </ul>
+              {/* Button is not functional...yet! */}
               <button
-                onClick={() => onSelectRoute(route.landmarks)}
                 className="mt-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800"
               >
                 Start Run
