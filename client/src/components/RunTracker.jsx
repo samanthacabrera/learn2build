@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 const RunTracker = ({ selectedLandmarks, directions, onClose }) => {
     const [isRunning, setIsRunning] = useState(true);
-    const [elapsedTime, setElapsedTime] = useState(0); // in seconds
-    const [totalDistance, setTotalDistance] = useState(0); // in meters
+    const [elapsedTime, setElapsedTime] = useState(0);
+    const [totalDistance, setTotalDistance] = useState(0);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true);
+    const [showDirections, setShowDirections] = useState(false);
 
     const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -17,8 +18,8 @@ const RunTracker = ({ selectedLandmarks, directions, onClose }) => {
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         setCurrentLocation({ latitude, longitude });
-                        setIsLoading(false); 
-                        setModalOpen(true); 
+                        setIsLoading(false);
+                        setModalOpen(true);
                     },
                     (error) => {
                         console.error("Error getting location: ", error);
@@ -31,7 +32,7 @@ const RunTracker = ({ selectedLandmarks, directions, onClose }) => {
             }
         };
 
-        askForLocation(); 
+        askForLocation();
     }, []);
 
     useEffect(() => {
@@ -50,54 +51,77 @@ const RunTracker = ({ selectedLandmarks, directions, onClose }) => {
 
     const handleFinishRun = () => {
         setIsRunning(false);
-        alert(`Run finished! Total time: ${elapsedTime} seconds, Total distance: ${(totalDistance / 1000).toFixed(2)} km.`);
-        onClose(); 
+        alert(`Congrats! Run finished!\nTotal time: ${elapsedTime} seconds\nTotal distance: ${(totalDistance / 1609.34).toFixed(2)} miles.`);
+        onClose();
     };
+
+    const toggleDirections = () => {
+        setShowDirections(prev => !prev);
+    };
+
+    const nextDirection = directions.length > 0 ? directions[0] : null; 
+    const nextDirectionText = nextDirection ? nextDirection.instruction : "N/A";
+    const nextDirectionDistance = nextDirection ? (nextDirection.distance / 1609.34).toFixed(2) : "0.00"; 
 
     return (
         <>
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-lg font-bold">Loading your location...</h3>
+                        <h3 className="text-lg font-semibold">Accessing your location...</h3>
                     </div>
                 </div>
             )}
             {modalOpen && !isLoading && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-lg font-bold">Run Tracker</h3>
-                        <div>Total Time: {elapsedTime} seconds</div>
-                        <div>Total Distance: {(totalDistance / 1000).toFixed(2)} km</div>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full overflow-hidden">
+                        <h3 className="text-3xl font-bold mb-4 text-center tracking-wider font-sans">Run Tracker</h3>
+                        <div className="text-lg mb-2 font-sans">
+                            <span>Total Time: {elapsedTime} seconds</span><br />
+                            <span>Total Distance: {(totalDistance / 1609.34).toFixed(2)} miles</span><br />
+                            <div className="my-2">
+                            <span className="text-gray-600 font-light">{nextDirectionDistance} miles - </span> 
+                            <span className="font-semibold tracking-wide">{nextDirectionText}</span>
+                            </div>   
+                        </div>
 
-                        {/* Directions Section */}
                         <div className="mt-4">
-                            <h3 className="text-gray-800 mb-2">Directions:</h3>
-                            <ul className="list-disc list-inside">
-                                {directions.map((direction, index) => (
-                                    <li key={index}>
-                                        {direction.instruction} - {(direction.distance / 1609.34).toFixed(2)} miles
-                                    </li>
-                                ))}
-                            </ul>
+                            <button 
+                                onClick={toggleDirections} 
+                                className="w-full bg-white text-black border border-black py-2 rounded-lg transition duration-300 mb-2 font-sans"
+                            >
+                                {showDirections ? 'Hide Overview' : 'See Overview'}
+                            </button>
+                            {showDirections && (
+                                <div className="max-h-40 overflow-y-auto">
+                                    <ul className="list-none">
+                                        {directions.map((direction, index) => (
+                                            <li key={index} className="mb-2">
+                                                <span className="text-gray-600 font-light">{(direction.distance / 1609.34).toFixed(2)} miles - </span>
+                                                <span className="">{`${direction.instruction}`}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex space-x-4 mt-4">
                             <button 
                                 onClick={handleTogglePauseResume} 
-                                className={`py-2 px-4 rounded-lg transition duration-300 ${isRunning ? 'bg-yellow-500 text-white hover:bg-yellow-400' : 'bg-blue-500 text-white hover:bg-blue-400'}`}
+                                className={`w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300 font-sans`}
                             >
                                 {isRunning ? 'Pause Run' : 'Resume Run'}
                             </button>
                             <button 
                                 onClick={handleFinishRun} 
                                 disabled={!isRunning} 
-                                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-400 transition duration-300"
+                                className={`w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300 font-sans ${!isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 Finish Run
                             </button>
                         </div>
-                        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
+                        <button onClick={onClose} className="absolute top-4 right-4 text-gray-100 hover:text-gray-200 font-sans">
                             &times; Close
                         </button>
                     </div>
