@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import RunTracker from './RunTracker'; 
+import RunTracker from './RunTracker';
 
 const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
     const { isSignedIn } = useAuth(); 
     const [currentLocation, setCurrentLocation] = useState(null);
     const [startRun, setStartRun] = useState(false);
+    const [directions, setDirections] = useState([]);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -25,13 +26,44 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
         }
     }, []);
 
-    if (!isSignedIn) {
-        return <div>Please sign in to create a route.</div>;
-    }
+    const fetchDirections = async () => {
+        if (!currentLocation || selectedLandmarks.length === 0) return;
+
+        const coordinates = [
+            `${currentLocation.longitude},${currentLocation.latitude}`, 
+            ...selectedLandmarks.map(landmark => `${landmark.coordinates.longitude},${landmark.coordinates.latitude}`), 
+            `${currentLocation.longitude},${currentLocation.latitude}` 
+        ].join(';');
+
+        const profile = 'mapbox/walking'; 
+        const url = `https://api.mapbox.com/directions/v5/${profile}/${coordinates}?steps=true&geometries=geojson&access_token=${mapboxToken}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const routeSteps = data.routes[0].legs[0].steps.map(step => ({
+                instruction: step.maneuver.instruction,
+                distance: step.distance 
+            }));
+            setDirections(routeSteps);
+        } catch (error) {
+            console.error("Error fetching directions: ", error);
+        }
+    };
+
+    const handleStartRun = () => {
+        setStartRun(true);
+        fetchDirections(); 
+    };
 
     const handleClose = () => {
         setStartRun(false); 
+        setDirections([]); 
     };
+
+    if (!isSignedIn) {
+        return <div>Please sign in to create a route.</div>;
+    }
 
     return (
         <div className="flex flex-col items-center p-4 max-w-md w-full">
@@ -47,7 +79,7 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
                     </ul>
                     <div className="flex space-x-4">
                         <button 
-                            onClick={() => setStartRun(true)} 
+                            onClick={handleStartRun} 
                             className={`bg-gray-800 text-white py-2 px-4 rounded-lg transition duration-300 
                                 ${!selectedLandmarks.length || !currentLocation ? 'cursor-not-allowed' : 'hover:bg-gray-700'}`} 
                             disabled={!selectedLandmarks.length || !currentLocation}
@@ -60,7 +92,20 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
                             selectedLandmarks={selectedLandmarks} 
                             userLocation={currentLocation} 
                             onClose={handleClose} 
+                            directions={directions} 
                         />
+                    )}
+                    {directions.length > 0 && (
+                        <div className="mt-4">
+                            <h3 className="text-gray-800 mb-2">Directions:</h3>
+                            <ul className="list-disc list-inside">
+                                {directions.map((direction, index) => (
+                                    <li key={index}>
+                                        {direction.instruction} - {(direction.distance / 1609.34).toFixed(2)} miles
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     )}
                 </>
             )}

@@ -146,7 +146,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
                     )}
                     
                     <div className="mt-6">
-                        <CreateRoute selectedLandmarks={selectedLandmarks} />
+                        <CreateRoute selectedLandmarks={selectedLandmarks} mapboxToken={mapboxToken} />
                     </div>
                 </div>
             </div>

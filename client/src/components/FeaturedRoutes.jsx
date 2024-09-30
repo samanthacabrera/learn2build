@@ -5,7 +5,7 @@ const routes = {
     {
       id: 1,
       name: 'Confluence Park to Cheesman Park to City Park',
-      description: 'A scenic route that takes you through Denver’s beautiful parks, perfect for a refreshing run.',
+      description: 'A scenic route that takes you through Denver’s most beautiful parks.',
       landmarks: [
         { name: 'Confluence Park', photoIdea: 'Capture a shot by the river or the pedestrian bridge.' },
         { name: 'Cheesman Park', photoIdea: 'Take a sunset photo from the pavilion.' },
@@ -14,15 +14,6 @@ const routes = {
     },
     {
       id: 2,
-      name: 'Coors Field to Empower Field',
-      description: 'A vibrant route connecting two of Denver’s iconic stadiums, great for sports enthusiasts.',
-      landmarks: [
-        { name: 'Coors Field', photoIdea: 'Snap a picture by the main entrance with the clock tower in the background.' },
-        { name: 'Empower Field', photoIdea: 'Take a wide-angle shot from the Mile High seating area.' },
-      ],
-    },
-    {
-      id: 3,
       name: 'State Capitol to Convention Center to Union Station',
       description: 'Explore the heart of downtown Denver with this urban route, filled with cultural landmarks.',
       landmarks: [
@@ -34,7 +25,7 @@ const routes = {
   ],
   LA: [
     {
-      id: 4,
+      id: 3,
       name: 'Ocean Trails Reserve',
       description: 'A stunning coastal route with views of the Pacific Ocean, perfect for a peaceful run.',
       landmarks: [
@@ -44,7 +35,7 @@ const routes = {
   ],
   NY: [
     {
-      id: 5,
+      id: 4,
       name: 'Central Park Loop',
       description: 'Run through New York’s famous Central Park, surrounded by nature and city views.',
       landmarks: [
