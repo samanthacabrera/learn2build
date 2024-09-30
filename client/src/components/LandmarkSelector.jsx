@@ -12,7 +12,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
     const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
     const [viewport, setViewport] = useState({
-        latitude: cityCoordinates[selectedCity]?.latitude || 39.7392, 
+        latitude: cityCoordinates[selectedCity]?.latitude || 39.7392,
         longitude: cityCoordinates[selectedCity]?.longitude || -104.9903,
         zoom: 11,
     });
@@ -20,7 +20,8 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
     const [selectedLandmarks, setSelectedLandmarks] = useState([]);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
     const [landmarkDetails, setLandmarkDetails] = useState(null);
-    const [totalDistance, setTotalDistance] = useState(0); 
+    const [totalDistance, setTotalDistance] = useState(0);
+    const [userLocation, setUserLocation] = useState(null);
 
     useEffect(() => {
         setViewport((prevViewport) => ({
@@ -31,15 +32,43 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
     }, [selectedCity]);
 
     useEffect(() => {
-        const fetchRoute = async () => {
-            if (selectedLandmarks.length < 2) {
-                setTotalDistance(0);
-                return;
+        const askForLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setUserLocation({ latitude, longitude });
+                        setViewport((prev) => ({
+                            ...prev,
+                            latitude,
+                            longitude,
+                        }));
+                    },
+                    (error) => {
+                        console.error("Error getting location: ", error);
+                        alert("Please allow location access to show your position.");
+                    }
+                );
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+                alert("Geolocation is not supported by your browser.");
             }
+        };
 
-            const waypoints = selectedLandmarks.map(landmark =>
-                `${landmark.coordinates.longitude},${landmark.coordinates.latitude}`
-            ).join(';');
+        askForLocation();
+    }, []);
+
+    useEffect(() => {
+        const fetchRoute = async () => {
+            if (!userLocation || selectedLandmarks.length === 0) return;
+
+            const waypoints = [
+                `${userLocation.longitude},${userLocation.latitude}`, 
+                ...selectedLandmarks.map(landmark =>
+                    `${landmark.coordinates.longitude},${landmark.coordinates.latitude}`
+                ),
+                `${userLocation.longitude},${userLocation.latitude}` 
+            ].join(';');
 
             try {
                 const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/walking/${waypoints}?steps=true&geometries=geojson&access_token=${mapboxToken}`);
@@ -48,7 +77,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
                 }
                 const data = await response.json();
                 const route = data.routes[0].geometry.coordinates;
-                const distance = data.routes[0].distance; // Distance in meters
+                const distance = data.routes[0].distance;
 
                 setRouteCoordinates(route);
                 setTotalDistance((distance * 0.000621371).toFixed(2)); 
@@ -58,7 +87,7 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
         };
 
         fetchRoute();
-    }, [selectedLandmarks, mapboxToken]);
+    }, [selectedLandmarks, userLocation, mapboxToken]);
 
     const toggleLandmarkSelection = (landmark) => {
         setSelectedLandmarks((prevSelected) => {
@@ -74,7 +103,6 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
     return (
         <div className="flex flex-col items-center">
             <div className="w-full max-w-7xl px-4 md:px-24 flex flex-col md:flex-row relative">
-
                 <div className="w-full md:w-2/3 relative">
                     <ReactMapGL
                         {...viewport}
@@ -105,6 +133,24 @@ const LandmarkSelector = ({ landmarks, selectedCity }) => {
                                 />
                             </Marker>
                         ))}
+
+                        {userLocation && (
+                            <Marker
+                                latitude={userLocation.latitude}
+                                longitude={userLocation.longitude}
+                            >
+                                <div
+                                    style={{
+                                        backgroundColor: 'blue',
+                                        width: '15px',
+                                        height: '15px',
+                                        borderRadius: '50%',
+                                        border: '2px solid white',
+                                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+                                    }}
+                                />
+                            </Marker>
+                        )}
 
                         {routeCoordinates.length > 0 && (
                             <Source
