@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const RunTracker = ({ selectedLandmarks, onClose }) => {
+const RunTracker = ({ selectedLandmarks, directions, onClose }) => {
     const [isRunning, setIsRunning] = useState(true);
     const [elapsedTime, setElapsedTime] = useState(0); // in seconds
     const [totalDistance, setTotalDistance] = useState(0); // in meters
     const [currentLocation, setCurrentLocation] = useState(null);
-    const [distanceToNextLandmark, setDistanceToNextLandmark] = useState(0);
-    const [nextLandmarkName, setNextLandmarkName] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true); 
 
@@ -37,32 +35,6 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
     }, []);
 
     useEffect(() => {
-        let watchId;
-        
-        if (isRunning && currentLocation) {
-            watchId = navigator.geolocation.watchPosition(
-                (position) => {
-                    const newLocation = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    };
-                    updateTotalDistance(newLocation);
-                    setCurrentLocation(newLocation); 
-                },
-                (error) => {
-                    console.error("Error watching position: ", error);
-                }
-            );
-        }
-
-        return () => {
-            if (watchId) {
-                navigator.geolocation.clearWatch(watchId);
-            }
-        };
-    }, [isRunning, currentLocation]);
-
-    useEffect(() => {
         let interval;
         if (isRunning) {
             interval = setInterval(() => {
@@ -71,62 +43,6 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
         }
         return () => clearInterval(interval);
     }, [isRunning]);
-
-    const updateTotalDistance = async (newLocation) => {
-        const closestLandmark = findClosestLandmark(newLocation.latitude, newLocation.longitude);
-        if (closestLandmark) {
-            setNextLandmarkName(closestLandmark.name);
-            await calculateDistanceToNextLandmark(newLocation.latitude, newLocation.longitude, closestLandmark);
-        }
-    };
-
-    const findClosestLandmark = (latitude, longitude) => {
-        if (!selectedLandmarks.length) return null;
-
-        return selectedLandmarks.reduce((closest, landmark) => {
-            const landmarkDistance = getDistance(latitude, longitude, landmark.coordinates.latitude, landmark.coordinates.longitude);
-            if (!closest || landmarkDistance < closest.distance) {
-                return { landmark, distance: landmarkDistance };
-            }
-            return closest;
-        }, null)?.landmark;
-    };
-
-    const getDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371000; 
-        const φ1 = (lat1 * Math.PI) / 180;
-        const φ2 = (lat2 * Math.PI) / 180;
-        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-        const Δλ = ((lon2 - lon1) * Math.PI) / 180;
-
-        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                  Math.cos(φ1) * Math.cos(φ2) *
-                  Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c; 
-    };
-
-    const calculateDistanceToNextLandmark = async (latitude, longitude, landmark) => {
-        const waypoints = `${longitude},${latitude};${landmark.coordinates.longitude},${landmark.coordinates.latitude}`;
-        
-        try {
-            const response = await fetch(`https://api.mapbox.com/directions/v5/mapbox/walking/${waypoints}?geometries=geojson&access_token=${mapboxToken}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-
-            if (data.routes.length > 0) {
-                const distance = data.routes[0].distance; 
-                setDistanceToNextLandmark(distance);
-            } else {
-                console.error('No routes found.');
-            }
-        } catch (error) {
-            console.error('Error fetching distance:', error);
-        }
-    };
 
     const handleTogglePauseResume = () => {
         setIsRunning(prev => !prev);
@@ -153,7 +69,19 @@ const RunTracker = ({ selectedLandmarks, onClose }) => {
                         <h3 className="text-lg font-bold">Run Tracker</h3>
                         <div>Total Time: {elapsedTime} seconds</div>
                         <div>Total Distance: {(totalDistance / 1000).toFixed(2)} km</div>
-                        <div>Distance to {nextLandmarkName}: {(distanceToNextLandmark / 1000).toFixed(2)} km</div>
+
+                        {/* Directions Section */}
+                        <div className="mt-4">
+                            <h3 className="text-gray-800 mb-2">Directions:</h3>
+                            <ul className="list-disc list-inside">
+                                {directions.map((direction, index) => (
+                                    <li key={index}>
+                                        {direction.instruction} - {(direction.distance / 1609.34).toFixed(2)} miles
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
                         <div className="flex space-x-4 mt-4">
                             <button 
                                 onClick={handleTogglePauseResume} 

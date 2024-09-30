@@ -95,18 +95,6 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
                             directions={directions} 
                         />
                     )}
-                    {directions.length > 0 && (
-                        <div className="mt-4">
-                            <h3 className="text-gray-800 mb-2">Directions:</h3>
-                            <ul className="list-disc list-inside">
-                                {directions.map((direction, index) => (
-                                    <li key={index}>
-                                        {direction.instruction} - {(direction.distance / 1609.34).toFixed(2)} miles
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
                 </>
             )}
         </div>
