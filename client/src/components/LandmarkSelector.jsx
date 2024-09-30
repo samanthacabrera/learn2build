@@ -4,8 +4,8 @@ import CreateRoute from './CreateRoute';
 
 const cityCoordinates = {
     Denver: { latitude: 39.7392, longitude: -104.9903 },
-    LA: { latitude: 34.0522, longitude: -118.2437 },
-    NY: { latitude: 40.7128, longitude: -74.0060 },
+    LA: { latitude: 34.1184, longitude: -118.3004 },
+    NY: { latitude: 40.7759, longitude: -73.9705 }
 };
 
 const LandmarkSelector = ({ landmarks, selectedCity }) => {

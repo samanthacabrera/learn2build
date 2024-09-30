@@ -4,19 +4,8 @@ import RunTracker from './RunTracker';
 
 const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
     const { isSignedIn } = useAuth(); 
-    const [route, setRoute] = useState('');
-    const [startRun, setStartRun] = useState(false);
     const [currentLocation, setCurrentLocation] = useState(null);
-
-    useEffect(() => {
-        if (!selectedLandmarks.length) {
-            setRoute("You must select at least one landmark to create a route.");
-            return;
-        }
-
-        const landmarksRoute = selectedLandmarks.map(l => l.name).join(' to ');
-        setRoute(`Customized route from your location to ${landmarksRoute} to your location`);
-    }, [selectedLandmarks]);
+    const [startRun, setStartRun] = useState(false);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -45,10 +34,17 @@ const CreateRoute = ({ selectedLandmarks, mapboxToken }) => {
     };
 
     return (
-        <div className="flex flex-col items-center my-6 p-4 max-w-md w-full">
-            {route && (
+        <div className="flex flex-col items-center p-4 max-w-md w-full">
+            {selectedLandmarks.length > 0 && currentLocation && (
                 <>
-                    <p className="text-gray-800 mb-4">{route}</p>
+                    <p className="text-gray-800 mb-4">Your Route:</p>
+                    <ul className="list-disc list-inside mb-4">
+                        <li>Start at your location</li>
+                        {selectedLandmarks.map((landmark, index) => (
+                            <li key={index}>{landmark.name}</li>
+                        ))}
+                        <li>Return to your location</li>
+                    </ul>
                     <div className="flex space-x-4">
                         <button 
                             onClick={() => setStartRun(true)} 

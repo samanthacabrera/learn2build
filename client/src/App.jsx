@@ -5,7 +5,6 @@ import Welcome from './components/Welcome';
 import LandmarkSelector from './components/LandmarkSelector';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
-import Community from './components/Community';
 import FeaturedRoutes from './components/FeaturedRoutes';
 import RunTracker from './components/RunTracker'; 
 
@@ -55,8 +54,11 @@ const App = () => {
                                     setSelectedLandmarks={setSelectedLandmarks} 
                                     selectedCity={selectedCity}  
                                 />
-                                <FeaturedRoutes onSelectRoute={handleSelectRoute} /> 
-                                <Community />
+                                <FeaturedRoutes
+                                    selectedCity={selectedCity}
+                                    onSelectRoute={handleSelectRoute}
+                                /> 
+                    
                                 {startRun && (
                                     <RunTracker 
                                         selectedLandmarks={selectedLandmarks} 
