@@ -6,7 +6,7 @@ this project is my submission to the learn-2-build hackathon
 
 ## Overview
 
-**RunTheCity** is a app designed to turn your business trips and vacations into active explorations. Whether you're a fitness enthusiast, a casual jogger, or someone who just wants to see the best of a city while staying active, RunTheCity helps you explore urban landscapes through running routes. The app is tailored to help you stay fit while discovering landmarks in different cities.
+**RunTheCity** is an app designed to turn your business trips and vacations into active explorations. Whether you're a fitness enthusiast, a casual jogger, or someone who just wants to see the best of a city while staying active, RunTheCity helps you explore urban landscapes through running routes. The app is tailored to help you stay fit while discovering landmarks in different cities.
 
 ## Tech Stack
 

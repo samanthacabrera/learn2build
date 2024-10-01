@@ -34,7 +34,7 @@ const Welcome = ({ setSelectedCity }) => {
         <CitySelector setSelectedCity={setSelectedCity} />
       ) : (
         <button 
-          className="px-6 sm:px-8 py-3 sm:py-4 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
+          className="px-6 sm:px-8 py-3 sm:py-4 mb-16 bg-black text-white font-bold rounded-full shadow-md hover:scale-105 transition-all duration-200"
           onClick={handleButtonClick}
         >
           Get Started
